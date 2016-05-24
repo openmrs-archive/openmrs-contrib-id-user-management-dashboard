@@ -1,0 +1,19 @@
+{
+  "name": "openmrs-contrib-id-user-management-dashboard",
+  "version": "0.0.1",
+  "description": "User Management Dashboard module for OpenMRS ID",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diospark/openmrs-contrib-id-user-management-dashboard"
+  },
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "express": "^4.13.4",
+    "pug": "^2.0.0-alpha8",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  }
+}
