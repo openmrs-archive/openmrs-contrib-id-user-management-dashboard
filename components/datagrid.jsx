@@ -18,6 +18,11 @@ export default class DataGrid extends React.Component {
             <TableRowColumn>John Smith</TableRowColumn>
             <TableRowColumn>Employed</TableRowColumn>
           </TableRow>
+          <TableRow>
+            <TableRowColumn>1</TableRowColumn>
+            <TableRowColumn>John Smith</TableRowColumn>
+            <TableRowColumn>Employed</TableRowColumn>
+          </TableRow>
         </TableBody>
       </Table>
     )
