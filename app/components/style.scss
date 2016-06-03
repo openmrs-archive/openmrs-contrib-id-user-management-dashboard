@@ -1,0 +1,20 @@
+@import "../../node_modules/react-toolbox/lib/base";
+@import "../../node_modules/react-toolbox/lib/app_bar/config";
+@import "../../node_modules/react-toolbox/lib/button/config";
+
+$title-font-size: 1.8 * $unit;
+
+.appbar {
+  > .title {
+    font-size: $title-font-size;
+    font-weight: $font-weight-bold;
+    position: relative;
+  }
+
+  > .button {
+    position: absolute;
+    top: $appbar-height - ($button-floating-height / 2);
+    right: $button-floating-height / 2;
+    z-index: $z-index-higher;
+  }
+}

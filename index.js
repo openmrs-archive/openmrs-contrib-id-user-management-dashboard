@@ -1,10 +1,24 @@
 'use strict';
 
-var express = require('express'),
-    dashboard = express();
+const path = require('path');
+const express = require('express');
+const webpack = require('webpack');
+const config = require('./webpack.config');
+
+const compiler = webpack(config);
 
 exports = module.exports = function(app) {
-  require('./lib/main')(dashboard);
-  // mount user dashboard on '/dashboard' route
-  app.use('/dashboard', dashboard);
+  app.use(require('webpack-dev-middleware')(compiler, {
+    publicPath: config.output.publicPath,
+    stats: {
+      colors: true
+    }
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './view/index.html'));
+  });
 };
+

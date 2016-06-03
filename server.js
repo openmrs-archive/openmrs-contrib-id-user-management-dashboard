@@ -1,10 +1,14 @@
 'use strict';
 
-var express = require('express'),
-  app = express();
+const express = require('express');
+const app = express();
 
-require('./lib/main')(app);
-app.listen(3000, () => {
-  console.log('App started..');
+require('./index')(app);
+
+app.listen(3000, '0.0.0.0', (err) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log('Listening at http://0.0.0.0:3000');
 });
-  
