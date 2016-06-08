@@ -52,5 +52,10 @@
   },
   "scripts": {
     "start": "node ./server"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "flexboxgrid": "^6.3.0",
+    "react-flexbox-grid": "^0.9.6"
   }
 }

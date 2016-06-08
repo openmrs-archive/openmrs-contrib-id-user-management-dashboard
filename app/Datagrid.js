@@ -1,4 +1,3 @@
-import Input from 'react-toolbox/lib/input';
 import Table from 'react-toolbox/lib/table';
 import React from 'react';
 
@@ -44,7 +43,6 @@ class TableWIdget extends React.Component {
 
 const DataGrid = () => (
   <section>
-    <Input type='text' label='Search' name='search' maxLength={16 } />
     <TableWIdget />
   </section>
 );

@@ -4,7 +4,7 @@ import theme from './AppBar.scss';
 
 const Header = ({ children, ...other }) => (
   <AppBar {...other} theme={theme}>
-    App Example
+    User Dashboard
     {children}
   </AppBar>
 );
