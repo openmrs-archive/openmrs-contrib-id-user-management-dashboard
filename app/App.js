@@ -20,10 +20,16 @@ const App = () => (
           <SearchBox />
         </Col>
         <Col md={3} style={{marginTop: '20px'}}>
-          <ComboBox label={statFilter} source={display}/>
+          <ComboBox label={statFilter} 
+                    source={filter} 
+                    dialogLabel={'Choose types to filter'}
+                    dialogTitle={'Filter data'}/>
         </Col>
         <Col md={3} style={{marginTop: '20px'}}>
-          <ComboBox label={statDisplay} source={filter}/>
+          <ComboBox label={statDisplay} 
+                    source={display}
+                    dialogLabel={'Choose columns to display'}
+                    dialogTitle={'Display selected columns'}/>
         </Col>  
       </Row>
       <DataGrid />

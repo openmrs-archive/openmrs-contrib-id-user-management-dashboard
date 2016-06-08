@@ -17,8 +17,7 @@ class MultiComboBox extends React.Component {
       <div>
         <Autocomplete
           direction="down"
-          label="Label"
-          hint="Hint"
+          label={this.props.dialogLabel}
           multiple={true}
           onChange={this.handleMultipleChange}
           source={this.props.source}
@@ -51,9 +50,9 @@ class ComboBox extends React.Component {
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title=''>
+          title={this.props.dialogTitle}>
 
-          <MultiComboBox source={this.props.source}/>
+          <MultiComboBox source={this.props.source} dialogLabel={this.props.dialogLabel}/>
         </Dialog>
       </div>
     );
