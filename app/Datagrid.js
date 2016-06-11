@@ -1,20 +1,9 @@
 import Table from 'react-toolbox/lib/table';
 import React from 'react';
 
-const UserModel = {
-  name: {type: String},
-  inMongo: {type: Boolean},
-  inLDAP: {type: Boolean}
-};
-
-const users = [
-  {name: 'Javi Jimenez', inLdap: true, inMongo: false},
-  {name: 'Dmytro Trifonov', inLdap: true, inMongo: true}
-];
-
-class TableWIdget extends React.Component {
+class DataGrid extends React.Component {
   
-  state = { selected: [], source: users };
+  state = { selected: [], source: this.props.source };
 
   handleChange = (row, key, value) => {
     const source = this.state.source;
@@ -29,7 +18,7 @@ class TableWIdget extends React.Component {
   render () {
     return (
       <Table
-        model={UserModel}
+        model={this.props.model}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
         selectable
@@ -40,11 +29,5 @@ class TableWIdget extends React.Component {
     );
   }
 }
-
-const DataGrid = () => (
-  <section>
-    <TableWIdget />
-  </section>
-);
 
 export default DataGrid;

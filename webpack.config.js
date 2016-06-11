@@ -16,7 +16,7 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    extensions: ['', '.jsx', '.css', '.scss', '.js', '.json'],
+    extensions: ['', '.css', '.scss', '.js', '.json'],
     modulesDirectories: [
       'node_modules',
       path.resolve(__dirname, './node_modules')
@@ -25,7 +25,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /(\.js|\.jsx)$/,
+        test: /\.js$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: { presets: ['es2015', 'stage-0', 'react'] }
@@ -45,7 +45,6 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })

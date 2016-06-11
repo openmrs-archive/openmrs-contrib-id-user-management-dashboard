@@ -5,11 +5,25 @@ import DataGrid from './Datagrid';
 import SearchBox from './SearchBox';
 import ComboBox from './ComboBox';
 
+/*
+ * Static data (demo)
+ */
 const display = ['Id', 'First Name', 'Last Name', 'inLDAP', 'inMongo'];
 const filter = ['LDAP', 'Mongo'];
 
 const statDisplay = 'Display: Id, inLDAP, inMongo';
 const statFilter = 'Filter: All';
+
+const UserModel = {
+  name: {type: String},
+  inMongo: {type: Boolean},
+  inLDAP: {type: Boolean}
+};
+
+const users = [
+  {name: 'Javi Jimenez', inLdap: true, inMongo: false},
+  {name: 'Dmytro Trifonov', inLdap: true, inMongo: true}
+];
 
 const App = () => (
   <div>
@@ -17,7 +31,7 @@ const App = () => (
     <Grid>
       <Row>
         <Col md={6}>
-          <SearchBox />
+          <SearchBox label={'Search...'}/>
         </Col>
         <Col md={3} style={{marginTop: '20px'}}>
           <ComboBox label={statFilter} 
@@ -32,7 +46,7 @@ const App = () => (
                     dialogTitle={'Display selected columns'}/>
         </Col>  
       </Row>
-      <DataGrid />
+      <DataGrid model={UserModel} source={users}/>
     </Grid>
   </div>
 );
