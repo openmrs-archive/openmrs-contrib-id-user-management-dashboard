@@ -10,9 +10,11 @@ import ComboBox from './ComboBox';
  */
 const display = ['Id', 'First Name', 'Last Name', 'inLDAP', 'inMongo'];
 const filter = ['LDAP', 'Mongo'];
+const groups = ['User', 'Admin', 'Other Group'];
 
 const statDisplay = 'Display: Id, inLDAP, inMongo';
 const statFilter = 'Filter: All';
+const statGroups = 'Groups: User, Admin';
 
 const UserModel = {
   name: {type: String},
@@ -30,21 +32,29 @@ const App = () => (
     <Header />
     <Grid>
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <SearchBox label={'Search...'}/>
         </Col>
-        <Col md={3} style={{marginTop: '20px'}}>
-          <ComboBox label={statFilter} 
-                    source={filter} 
+      </Row>
+      <Row>
+        <Col md={4} style={{marginTop: '20px'}}>
+          <ComboBox label={statFilter}
+                    source={filter}
                     dialogLabel={'Choose types to filter'}
                     dialogTitle={'Filter data'}/>
         </Col>
-        <Col md={3} style={{marginTop: '20px'}}>
-          <ComboBox label={statDisplay} 
+        <Col md={4} style={{marginTop: '20px'}}>
+          <ComboBox label={statDisplay}
                     source={display}
                     dialogLabel={'Choose columns to display'}
                     dialogTitle={'Display selected columns'}/>
-        </Col>  
+        </Col>
+        <Col md={4} style={{marginTop: '20px'}}>
+          <ComboBox label={statGroups}
+                    source={groups}
+                    dialogLabel={'Set groups'}
+                    dialogTitle={'LDAP groups user belongs to'}/>
+        </Col>
       </Row>
       <DataGrid model={UserModel} source={users}/>
     </Grid>
