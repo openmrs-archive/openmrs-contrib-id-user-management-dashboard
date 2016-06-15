@@ -1,6 +1,8 @@
 import Table from 'react-toolbox/lib/table';
 import React from 'react';
 
+import Pager from './Pager';
+
 class DataGrid extends React.Component {
   
   state = { selected: [], source: this.props.source };
@@ -17,15 +19,19 @@ class DataGrid extends React.Component {
 
   render () {
     return (
-      <Table
-        model={this.props.model}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        selectable
-        multiSelectable
-        selected={this.state.selected}
-        source={this.state.source}
-      />
+      <div>
+        <Pager />
+        <Table
+          model={this.props.model}
+          onChange={this.handleChange}
+          onSelect={this.handleSelect}
+          selectable
+          multiSelectable
+          selected={this.state.selected}
+          source={this.state.source}
+        />
+        <Pager />
+      </div>
     );
   }
 }
