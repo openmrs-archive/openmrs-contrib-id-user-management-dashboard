@@ -20,7 +20,6 @@ class DataGrid extends React.Component {
   render () {
     return (
       <div>
-        <Pager />
         <Table
           model={this.props.model}
           onChange={this.handleChange}
