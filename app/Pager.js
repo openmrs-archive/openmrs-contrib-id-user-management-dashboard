@@ -1,5 +1,5 @@
 import React from 'react';
-const {Grid, Col, Row} = require('react-flexbox-grid');
+import {Grid, Col, Row} from 'react-flexbox-grid';
 import Link from 'react-toolbox/lib/link';
 
 class Pager extends React.Component {

@@ -1,5 +1,5 @@
 import React from 'react';
-const {Grid, Row, Col} = require('react-flexbox-grid');
+import {Grid, Row, Col} from 'react-flexbox-grid';
 import Header from './Header';
 import DataGrid from './Datagrid';
 import SearchBox from './SearchBox';
