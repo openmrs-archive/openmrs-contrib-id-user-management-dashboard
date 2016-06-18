@@ -7,9 +7,9 @@ class Pager extends React.Component {
     return <nav>
       <Grid>
         <Row>
-          <Link style={{margin: '5px', marginLeft: '15px'}} label="First" />
-          <Link style={{margin: '5px'}} active label="1" />
-          <Link style={{margin: '5px'}} label="Last" />
+          <Link style={{margin: '5px', marginLeft: '15px'}} label={'First'} />
+          <Link style={{margin: '5px'}} active label={'1'} />
+          <Link style={{margin: '5px'}} label={'Last'} />
         </Row>
       </Grid>
     </nav>

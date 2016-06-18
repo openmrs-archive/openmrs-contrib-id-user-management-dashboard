@@ -5,7 +5,7 @@ import Pager from './Pager';
 
 class DataGrid extends React.Component {
   
-  state = { selected: [], source: this.props.source };
+  state = { selected: [], source: this.props.source, prevSelected: [] };
 
   handleChange = (row, key, value) => {
     const source = this.state.source;
@@ -14,6 +14,11 @@ class DataGrid extends React.Component {
   };
 
   handleSelect = (selected) => {
+    const prevSelected = this.state.selected;
+    if (prevSelected.length && selected.length && selected[0] === prevSelected[0]) {
+      selected = [];
+    }
+    this.setState({prevSelected});
     this.setState({selected});
   };
 
