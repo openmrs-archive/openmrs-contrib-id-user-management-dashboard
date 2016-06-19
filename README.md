@@ -5,7 +5,7 @@ User Management Dashboard module for [OpenMRS ID Dashboard][1].
 ## Description
 TBD
 
-## Installation
+## Resolving dependencies
 ```
 npm i
 ```
