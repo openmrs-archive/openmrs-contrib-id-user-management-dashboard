@@ -1,5 +1,5 @@
 import Immutable   from 'immutable';
-import AltInstance from 'lib/AltInstance';
+import AltInstance from '../lib/AltInstance';
 
 class AppActions {
   addGridData(data) {

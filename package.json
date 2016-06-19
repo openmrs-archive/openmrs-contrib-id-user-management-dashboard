@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "alt": "^0.18.4",
+    "alt-utils": "^1.0.0",
     "classnames": "^2.2.5",
     "flexboxgrid": "^6.3.0",
     "immutable": "^3.8.1",

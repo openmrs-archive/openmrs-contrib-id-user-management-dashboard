@@ -1,5 +1,6 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-flexbox-grid';
+import AppStore from '../stores/AppStore';
 import Header from './Header';
 import DataGrid from './Datagrid';
 import SearchBox from './SearchBox';
@@ -21,11 +22,6 @@ const UserModel = {
   inMongo: {type: Boolean},
   inLDAP: {type: Boolean}
 };
-
-const users = [
-  {name: 'Javi Jimenez', inLdap: true, inMongo: false},
-  {name: 'Dmytro Trifonov', inLdap: true, inMongo: true}
-];
 
 const App = () => (
   <div>
@@ -56,7 +52,7 @@ const App = () => (
                     dialogTitle={'LDAP groups user belongs to'}/>
         </Col>
       </Row>
-      <DataGrid model={UserModel} source={users}/>
+      <DataGrid model={UserModel} source={AppStore.getState()}/>
     </Grid>
   </div>
 );

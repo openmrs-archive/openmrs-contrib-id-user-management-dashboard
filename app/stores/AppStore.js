@@ -1,8 +1,8 @@
-import ImmutableStore from 'alt/utils/ImmutableUtil';
+import ImmutableStore from 'alt-utils/lib/ImmutableUtil';
 import { List }       from 'immutable';
 
-import AltInstance    from 'lib/AltInstance';
-import Actions        from 'actions/AppActions';
+import AltInstance    from '../lib/AltInstance';
+import Actions        from '../actions/AppActions';
 
 class AppStore {
   constructor() {
@@ -11,7 +11,14 @@ class AppStore {
     this.bindListeners({
       addGridData: addGridData
     });
-    this.state = List();
+    this.state = [];
+    // temporary
+    this.state.push({
+      name: 'Javi Jimenez', inLdap: true, inMongo: false
+    });
+    this.state.push({
+      name: 'Dmytro Trifonov', inLdap: true, inMongo: true
+    });
   }
 
   addGridData(data) {
