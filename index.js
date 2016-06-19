@@ -18,7 +18,7 @@ exports = module.exports = function(app) {
 
   app.use(require('webpack-hot-middleware')(compiler));
 
-  app.get('*', (req, res) => {
+  app.get('/user-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, './app/index.html'));
   });
 };
