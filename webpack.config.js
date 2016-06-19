@@ -35,12 +35,9 @@ module.exports = {
       }
     ]
   },
-  toolbox: {
-    theme: path.join(__dirname, 'app/toolbox-theme.scss')
-  },
   postcss: [autoprefixer],
   sassLoader: {
-    data: '@import "' + path.resolve(__dirname, 'app/theme/_config.scss') + '";'
+    data: '@import "' + path.resolve(__dirname, 'app/theme.scss') + '";'
   },
   plugins: [
     new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
