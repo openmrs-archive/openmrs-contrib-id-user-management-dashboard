@@ -2,8 +2,14 @@ import Immutable   from 'immutable';
 import AltInstance from '../lib/AltInstance';
 
 class AppActions {
-  addGridData(data) {
+  setridData(data) {
     this.dispatch(Immutable.fromJS(data));
+  }
+  setFilter(filter) {
+    this.dispatch(Immutable.fromJS(filter));
+  }
+  setColumns(columns) {
+    this.dispatch(Immutable.fromJS(columns));
   }
 }
 
