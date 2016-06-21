@@ -6,10 +6,10 @@ import Actions        from '../actions/AppActions';
 
 class AppStore {
   constructor() {
-    let {addGridData} = Actions;
+    let {setGridData} = Actions;
 
     this.bindListeners({
-      addGridData: addGridData
+      setGridData: setGridData
     });
     this.state = [];
     // temporary
@@ -21,7 +21,7 @@ class AppStore {
     });
   }
 
-  addGridData(data) {
+  setGridData(data) {
     return this.setState(data);
   }
 }

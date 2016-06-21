@@ -2,7 +2,7 @@ import Immutable   from 'immutable';
 import AltInstance from '../lib/AltInstance';
 
 class AppActions {
-  setridData(data) {
+  setGridData(data) {
     this.dispatch(Immutable.fromJS(data));
   }
   setFilter(filter) {
