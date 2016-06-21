@@ -5,6 +5,9 @@ class AppActions {
   setGridData(data) {
     this.dispatch(Immutable.fromJS(data));
   }
+  setQuery(query) {
+    this.dispatch(Immutable.fromJS(query));
+  }
   setFilter(filter) {
     this.dispatch(Immutable.fromJS(filter));
   }

@@ -60,6 +60,7 @@
     "classnames": "^2.2.5",
     "flexboxgrid": "^6.3.0",
     "immutable": "^3.8.1",
+    "lodash": "^4.13.1",
     "react-flexbox-grid": "^0.9.6"
   }
 }

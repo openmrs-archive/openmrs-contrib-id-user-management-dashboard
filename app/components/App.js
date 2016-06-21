@@ -52,7 +52,7 @@ const App = () => (
                     dialogTitle={'LDAP groups user belongs to'}/>
         </Col>
       </Row>
-      <DataGrid model={UserModel} source={AppStore.getState()}/>
+      <DataGrid model={UserModel} source={AppStore.state.filteredItems}/>
     </Grid>
   </div>
 );
