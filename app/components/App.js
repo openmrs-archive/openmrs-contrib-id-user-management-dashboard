@@ -29,7 +29,7 @@ const App = () => (
     <Grid>
       <Row>
         <Col md={12}>
-          <SearchBox label={'Search...'}/>
+          <SearchBox label={'Filter...'}/>
         </Col>
       </Row>
       <Row>
