@@ -2,6 +2,7 @@ import React from 'react';
 import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
+import theme from './combo.scss';
 
 class MultiComboBox extends React.Component {
   state = {
@@ -21,6 +22,7 @@ class MultiComboBox extends React.Component {
           multiple={true}
           onChange={this.handleMultipleChange}
           source={this.props.source}
+          theme={theme}
           value={this.state.multiple}/>
       </div>
     );
