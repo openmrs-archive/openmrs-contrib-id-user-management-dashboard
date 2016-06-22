@@ -10,9 +10,10 @@ class DataGrid extends React.Component {
   state = { selected: [], source: this.props.source, prevSelected: [] };
 
   handleChange = (row, key, value) => {
-    const source = this.state.source;
-    source[row][key] = value;
-    this.setState({source});
+    return false;
+    //const source = this.state.source;
+    //source[row][key] = value;
+    //this.setState({source});
   };
 
   handleSelect = (selected) => {

@@ -24,10 +24,10 @@ class AppStore {
     };
     // temporary
     this.state.allItems.push({
-      name: 'Javi Jimenez', inLdap: true, inMongo: false
+      name: 'Javi Jimenez', inLDAP: true, inMongo: false
     });
     this.state.allItems.push({
-      name: 'Dmytro Trifonov', inLdap: true, inMongo: true
+      name: 'Dmytro Trifonov', inLDAP: true, inMongo: true
     });
     this.state.filteredItems = this.state.allItems;
   }
