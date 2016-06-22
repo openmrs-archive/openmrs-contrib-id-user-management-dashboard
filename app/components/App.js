@@ -50,26 +50,26 @@ class App extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col md={4} style={{marginTop: '20px'}}>
+            <Col md style={{marginTop: '20px'}}>
               <ComboBox label={statFilter}
                         source={filter}
                         dialogLabel={'Choose types to filter'}
                         dialogTitle={'Filter data'}/>
             </Col>
-            <Col md={4} style={{marginTop: '20px'}}>
+            <Col md style={{marginTop: '20px'}}>
               <ComboBox label={statDisplay}
                         source={display}
                         dialogLabel={'Choose columns to display'}
                         dialogTitle={'Display selected columns'}/>
             </Col>
-            <Col md={4} style={{marginTop: '20px'}}>
+            <Col md style={{marginTop: '20px'}}>
               <ComboBox label={statGroups}
                         source={groups}
                         dialogLabel={'Set groups'}
                         dialogTitle={'LDAP groups user belongs to'}/>
             </Col>
           </Row>
-          <DataGrid model={UserModel} source={this.props.filteredItems}/>
+          <DataGrid model={UserModel} source={this.props.filteredItems} groups={this.props.groups}/>
         </Grid>
       </div>
     )

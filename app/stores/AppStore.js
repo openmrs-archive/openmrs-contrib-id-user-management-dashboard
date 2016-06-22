@@ -19,6 +19,7 @@ class AppStore {
       query: '',
       allColumns: [],
       filteredItems: [],
+      groups: ['admin', 'user', 'writer'],
       selectedColumns: []
     };
     // temporary

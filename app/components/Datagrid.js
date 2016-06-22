@@ -1,10 +1,9 @@
 import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
-import Button from 'react-toolbox/lib/button';
 import Link from 'react-toolbox/lib/link';
 import React from 'react';
 
-import Pager from './Pager';
+import EditUser from './EditUser';
 
 class DataGrid extends React.Component {
   
@@ -26,6 +25,13 @@ class DataGrid extends React.Component {
   };
 
   render () {
+    var editUser;
+    if (this.state.selected && this.state.selected.length) {
+      editUser = <EditUser mini source={this.props.groups} user={this.state.source[this.state.selected[0]]}/>;
+    }
+    else {
+      editUser = <div></div>;
+    }
     return (
       <Grid>
         <Row>
@@ -38,10 +44,10 @@ class DataGrid extends React.Component {
             selected={this.state.selected}
             source={this.state.source}
           />
-        </Row>  
-        <Row>
+        </Row>
+        <Row style={{marginTop: '10px'}}>
           <Col md={2}>
-            <Button icon={'mode_edit'} label={'Configure'} mini disabled={!this.state.selected.length}/>
+            {editUser}
           </Col>
           <Col md={2} mdOffset={8}>
             <Row>
