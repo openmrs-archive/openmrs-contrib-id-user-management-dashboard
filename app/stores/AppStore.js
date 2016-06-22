@@ -1,5 +1,3 @@
-import ImmutableStore from 'alt-utils/lib/ImmutableUtil';
-import { List }       from 'immutable';
 import _ from 'lodash';
 
 import AltInstance    from '../lib/AltInstance';
@@ -18,7 +16,7 @@ class AppStore {
     this.state = {
       allItems: [],
       filters: ['inDLAP', 'inMongo'],
-      key: '',
+      query: '',
       allColumns: [],
       filteredItems: [],
       selectedColumns: []
@@ -30,10 +28,6 @@ class AppStore {
     this.state.allItems.push({
       name: 'Dmytro Trifonov', inLdap: true, inMongo: true
     });
-    this.enableFilters();
-  }
-  
-  enableFilters() {
     this.state.filteredItems = this.state.allItems;
   }
 
@@ -43,12 +37,15 @@ class AppStore {
   setFilter(filters) {
     return this.setState({filters});
   }
-  setQuery(key) {
-    return this.setState({key});
+  setQuery(query) {
+    var filteredItems = _.filter(this.state.allItems, function(item) {
+      return item.name.indexOf(query) !== -1;
+    });
+    this.setState({query, filteredItems});
   }
   setColumns(selectedColumns) {
     return this.setState({selectedColumns});
   }
 }
 
-export default AltInstance.createStore(ImmutableStore(AppStore));
+export default AltInstance.createStore(AppStore, 'AppStore');

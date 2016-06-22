@@ -1,18 +1,17 @@
-import Immutable   from 'immutable';
 import AltInstance from '../lib/AltInstance';
 
 class AppActions {
   setGridData(data) {
-    this.dispatch(Immutable.fromJS(data));
+    return {data};
   }
-  setQuery(query) {
-    this.dispatch(Immutable.fromJS(query));
+  setQuery(name, value) {
+    return value;
   }
   setFilter(filter) {
-    this.dispatch(Immutable.fromJS(filter));
+    return {filter}
   }
   setColumns(columns) {
-    this.dispatch(Immutable.fromJS(columns));
+    return {columns};
   }
 }
 
