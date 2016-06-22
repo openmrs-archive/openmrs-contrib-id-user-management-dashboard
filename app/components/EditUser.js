@@ -1,9 +1,10 @@
 import React from 'react';
 import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
+
 import MultiComboBox from './MultiComboBox';
 
-class ComboBox extends React.Component {
+class EditUser extends React.Component {
   state = {
     active: false
   };
@@ -20,13 +21,13 @@ class ComboBox extends React.Component {
   render () {
     return (
       <div>
-        <Button label={this.props.label} onClick={this.handleToggle} />
+        <Button label={'Configure'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={this.props.dialogTitle}>
+          title={'Edit User Properties'}>
 
           <MultiComboBox source={this.props.source} dialogLabel={this.props.dialogLabel}/>
         </Dialog>
@@ -35,5 +36,5 @@ class ComboBox extends React.Component {
   }
 }
 
-export default ComboBox;
+export default EditUser;
 
