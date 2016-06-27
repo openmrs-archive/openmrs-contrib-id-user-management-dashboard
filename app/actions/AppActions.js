@@ -1,6 +1,6 @@
 import AltInstance from '../lib/AltInstance';
 
-class AppActions {
+/*class AppActions {
   setGridData(data) {
     return {data};
   }
@@ -13,6 +13,6 @@ class AppActions {
   setColumns(columns) {
     return {columns};
   }
-}
+}*/
 
-export default AltInstance.createActions(AppActions);
+export default AltInstance.generateActions('setGridData', 'setQuery', 'setFilter', 'setColumns');

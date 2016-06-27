@@ -26,9 +26,6 @@ class AppStore {
     this.state.allItems.push({
       name: 'Javi Jimenez', inLDAP: true, inMongo: false
     });
-    this.state.allItems.push({
-      name: 'Dmytro Trifonov', inLDAP: true, inMongo: true
-    });
     this.state.filteredItems = this.state.allItems;
   }
 

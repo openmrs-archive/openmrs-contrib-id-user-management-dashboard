@@ -38,6 +38,10 @@ class App extends React.Component {
   static getPropsFromStores() {
     return AppStore.getState();
   }
+
+  onSearchBoxChange(key, value) {
+    return AppActions.setQuery(value);
+  }
   
   render() {
     return (
@@ -46,7 +50,7 @@ class App extends React.Component {
         <Grid>
           <Row>
             <Col md={12}>
-              <SearchBox label={'Filter...'} onChange={AppActions.setQuery}/>
+              <SearchBox label={'Filter...'} onChange={this.onSearchBoxChange}/>
             </Col>
           </Row>
           <Row>
