@@ -1,6 +1,6 @@
 import React from 'react';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
-import theme from './combo.scss';
+import theme from './MultiComboBox.scss';
 
 class MultiComboBox extends React.Component {
   state = {

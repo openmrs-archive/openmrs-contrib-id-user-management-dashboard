@@ -7,7 +7,20 @@ import EditUser from './EditUser';
 
 class DataGrid extends React.Component {
   
-  state = { selected: [], source: this.props.source, prevSelected: [] };
+  constructor(props) {
+    super(props);
+    
+    this.state = { 
+      model: props.model,
+      selected: [],
+      source: props.source, 
+      prevSelected: []
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({source: newProps.source});
+  }
 
   handleSelect = (selected) => {
     const prevSelected = this.state.selected;
@@ -30,7 +43,7 @@ class DataGrid extends React.Component {
       <Grid>
         <Row>
           <Table
-            model={this.props.model}
+            model={this.state.model}
             onSelect={this.handleSelect}
             selectable
             multiSelectable

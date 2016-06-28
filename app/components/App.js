@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-flexbox-grid';
 import Header from './Header';
-import DataGrid from './Datagrid';
+import DataGrid from './DataGrid';
 import SearchBox from './SearchBox';
 import ComboBox from './ComboBox';
 
@@ -21,8 +21,8 @@ const statGroups = 'Groups: User, Admin';
 
 const UserModel = {
   name: {type: String},
-  inMongo: {type: Boolean},
-  inLDAP: {type: Boolean}
+  inMongo: {type: String},
+  inLDAP: {type: String}
 };
 
 class App extends React.Component {
