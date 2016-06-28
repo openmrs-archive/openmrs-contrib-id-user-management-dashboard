@@ -9,13 +9,6 @@ class DataGrid extends React.Component {
   
   state = { selected: [], source: this.props.source, prevSelected: [] };
 
-  handleChange = (row, key, value) => {
-    return false;
-    //const source = this.state.source;
-    //source[row][key] = value;
-    //this.setState({source});
-  };
-
   handleSelect = (selected) => {
     const prevSelected = this.state.selected;
     if (prevSelected.length && selected.length && selected[0] === prevSelected[0]) {
@@ -38,7 +31,6 @@ class DataGrid extends React.Component {
         <Row>
           <Table
             model={this.props.model}
-            onChange={this.handleChange}
             onSelect={this.handleSelect}
             selectable
             multiSelectable

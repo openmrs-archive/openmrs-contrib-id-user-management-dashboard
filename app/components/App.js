@@ -1,6 +1,5 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-flexbox-grid';
-import connectToStores from 'alt-utils/lib/connectToStores';
 import Header from './Header';
 import DataGrid from './Datagrid';
 import SearchBox from './SearchBox';
@@ -8,6 +7,7 @@ import ComboBox from './ComboBox';
 
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
+
 /*
  * Static data (demo)
  */
@@ -29,14 +29,21 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = AppStore.getState();
+    this.onStoreChange = this.onStoreChange.bind(this);
   }
 
-  static getStores() {
-    return [AppStore];
+  componentDidMount() {
+    AppStore.listen(this.onStoreChange);
   }
 
-  static getPropsFromStores() {
-    return AppStore.getState();
+  componentWillUnmount() {
+    AppStore.unlisten(this.onStoreChange);
+  }
+
+  onStoreChange(state) {
+    console.log('trace: onStoreChange: ', state);
+    this.setState(state);
   }
 
   onSearchBoxChange(key, value) {
@@ -73,11 +80,11 @@ class App extends React.Component {
                         dialogTitle={'LDAP groups user belongs to'}/>
             </Col>
           </Row>
-          <DataGrid model={UserModel} source={this.props.filteredItems} groups={this.props.groups}/>
+          <DataGrid model={UserModel} source={this.state.filteredItems} groups={this.state.groups}/>
         </Grid>
       </div>
     )
   }
 }
 
-export default connectToStores(App);
+export default App;
