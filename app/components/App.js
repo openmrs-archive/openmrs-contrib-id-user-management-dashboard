@@ -11,19 +11,11 @@ import AppActions from '../actions/AppActions';
 /*
  * Static data (demo)
  */
-const display = ['Id', 'First Name', 'Last Name', 'inLDAP', 'inMongo'];
 const filter = ['LDAP', 'Mongo'];
 const groups = ['User', 'Admin', 'Other Group'];
 
-const statDisplay = 'Display: Id, inLDAP, inMongo';
 const statFilter = 'Show: All';
 const statGroups = 'Groups: User, Admin';
-
-const UserModel = {
-  name: {type: String},
-  inMongo: {type: String},
-  inLDAP: {type: String}
-};
 
 class App extends React.Component {
 
@@ -68,19 +60,14 @@ class App extends React.Component {
                         dialogTitle={'Filter data'}/>
             </Col>
             <Col md style={{marginTop: '20px'}}>
-              <ComboBox label={statDisplay}
-                        source={display}
+              <ComboBox label={'Display: '}
+                        value={this.state.columns}
+                        source={this.state.allColumns}
                         dialogLabel={'Choose columns to display'}
                         dialogTitle={'Display selected columns'}/>
             </Col>
-            <Col md style={{marginTop: '20px'}}>
-              <ComboBox label={statGroups}
-                        source={groups}
-                        dialogLabel={'Set groups'}
-                        dialogTitle={'LDAP groups user belongs to'}/>
-            </Col>
           </Row>
-          <DataGrid model={UserModel} source={this.state.filteredItems} groups={this.state.groups}/>
+          <DataGrid model={this.state.userModel}/>
         </Grid>
       </div>
     )

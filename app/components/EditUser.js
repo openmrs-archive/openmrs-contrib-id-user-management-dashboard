@@ -4,15 +4,24 @@ import Button from 'react-toolbox/lib/button';
 import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
 
+import AppStore from '../stores/AppStore';
+
 import MultiComboBox from './MultiComboBox';
 
 class EditUser extends React.Component {
-  state = {
-    active: false,
-    inLDAP: this.props.user.inLDAP,
-    inMongo: this.props.user.inMongo,
-    snackbar: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      allGroups: AppStore.state.allGroups,
+      user: props.user,
+      active: false,
+      snackbar: false
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({user: newProps.user});
+  }
 
   handleToggle = () => {
     this.setState({active: !this.state.active});
@@ -20,17 +29,17 @@ class EditUser extends React.Component {
 
   handleChange = (field, value) => {
     var current = this.state[field];
-    if (current == false && value) {
-      this.setState({...this.state, [field]: value});
+    if (current == 'No' && value) {
+      this.setState({...this.state, [field]: 'Yes'});
       this.setState({snackbar:true});
     }
   };
   handleSnackbarClick = () => {
-    this.setState({ snackbar: false });
+    this.setState({snackbar: false});
   };
 
   handleSnackbarTimeout = () => {
-    this.setState({ snackbar: false });
+    this.setState({snackbar: false});
   };
 
   actions = [
@@ -41,22 +50,21 @@ class EditUser extends React.Component {
   render () {
     return (
       <div>
-        <Button label={'Configure'} icon={'mode_edit'} onClick={this.handleToggle} disabled={this.props.disabled} />
+        <Button label={'Configure'} icon={'mode_edit'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={'Edit User "' + this.props.user.name + '"'}>
-          
-          <MultiComboBox source={this.props.source} dialogLabel={'Select groups'}/>
+          title={'Edit User "' + this.state.user.firstName + ' ' + this.state.user.lastName + '"'}>
+          <MultiComboBox source={this.state.allGroups} value={this.state.user.groups} dialogLabel={'Select groups'}/>
           <Switch
-            checked={this.state.inLDAP}
+            checked={this.state.user.inLDAP === 'Yes'}
             label="LDAP"
             onChange={this.handleChange.bind(this, 'inLDAP')}
           />
           <Switch
-            checked={this.state.inMongo}
+            checked={this.state.user.inMongo === 'Yes'}
             label="Mongo"
             onChange={this.handleChange.bind(this, 'inMongo')}
           />
