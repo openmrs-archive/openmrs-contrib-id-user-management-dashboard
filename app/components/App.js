@@ -67,7 +67,7 @@ class App extends React.Component {
                         dialogTitle={'Display selected columns'}/>
             </Col>
           </Row>
-          <DataGrid model={this.state.userModel}/>
+          <DataGrid source={this.state.filteredItems} model={this.state.userModel}/>
         </Grid>
       </div>
     )

@@ -3,8 +3,6 @@ import {Grid, Col, Row} from 'react-flexbox-grid';
 import Link from 'react-toolbox/lib/link';
 import React from 'react';
 
-import AppStore from '../stores/AppStore';
-
 import EditUser from './EditUser';
 
 class DataGrid extends React.Component {
@@ -15,9 +13,13 @@ class DataGrid extends React.Component {
     this.state = { 
       model: props.model,
       selected: [],
-      source: AppStore.state.filteredItems,
+      source: props.source,
       prevSelected: []
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({source: newProps.source});
   }
 
   handleSelect = (selected) => {

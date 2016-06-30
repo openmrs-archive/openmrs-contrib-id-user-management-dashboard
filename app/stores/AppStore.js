@@ -52,6 +52,10 @@ class AppStore {
     });
     this.state.filteredItems = this.state.allItems;
   }
+  
+  applyFilters() {
+    
+  }
 
   setGridData(allItems) {
     return this.setState({allItems});
@@ -61,7 +65,7 @@ class AppStore {
   }
   setQuery(query) {
     let filteredItems = _.filter(this.state.allItems, function(item) {
-      return item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      return item.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     this.setState({query, filteredItems});
   }
