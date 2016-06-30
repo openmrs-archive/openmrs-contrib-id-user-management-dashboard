@@ -3,9 +3,12 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 import theme from './MultiComboBox.scss';
 
 class MultiComboBox extends React.Component {
-  state = {
-    multiple: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      multiple: []
+    };
+  }
 
   handleMultipleChange = (value) => {
     this.setState({multiple: value});

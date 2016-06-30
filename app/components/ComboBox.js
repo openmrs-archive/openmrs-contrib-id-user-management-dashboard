@@ -3,14 +3,29 @@ import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import MultiComboBox from './MultiComboBox';
 
+import AppActions from '../actions/AppActions';
+
 class ComboBox extends React.Component {
-  state = {
-    active: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: false,
+      value: props.value,
+      source: props.source,
+      label: props.dialogLabel,
+      title: props.dialogTitle
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({value: newProps.value});
+  }
 
   handleToggle = () => {
     this.setState({active: !this.state.active});
   };
+  
+  handleChange = AppActions.setColumns;
 
   actions = [
     { label: "Cancel", onClick: this.handleToggle },
@@ -26,10 +41,9 @@ class ComboBox extends React.Component {
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={this.props.dialogTitle}>
-
-          <MultiComboBox source={this.props.source} dialogLabel={this.props.dialogLabel}/>
+          title={this.state.dialogTitle}>
         </Dialog>
+        <MultiComboBox source={this.props.source} dialogLabel={this.props.dialogLabel}/>
       </div>
     );
   }

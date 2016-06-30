@@ -7,12 +7,13 @@ import Switch from 'react-toolbox/lib/switch';
 import MultiComboBox from './MultiComboBox';
 
 class EditUser extends React.Component {
-  state = {
-    active: false,
-    inLDAP: this.props.user.inLDAP,
-    inMongo: this.props.user.inMongo,
-    snackbar: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: false,
+      snackbar: false
+    };
+  }
 
   handleToggle = () => {
     this.setState({active: !this.state.active});
@@ -20,8 +21,8 @@ class EditUser extends React.Component {
 
   handleChange = (field, value) => {
     var current = this.state[field];
-    if (current == false && value) {
-      this.setState({...this.state, [field]: value});
+    if (current == 'No' && value) {
+      this.setState({...this.state, [field]: 'Yes'});
       this.setState({snackbar:true});
     }
   };
@@ -49,14 +50,13 @@ class EditUser extends React.Component {
           onOverlayClick={this.handleToggle}
           title={'Edit User "' + this.props.user.name + '"'}>
           
-          <MultiComboBox source={this.props.source} dialogLabel={'Select groups'}/>
           <Switch
-            checked={this.state.inLDAP}
+            checked={this.props.user.inLDAP === 'Yes'}
             label="LDAP"
             onChange={this.handleChange.bind(this, 'inLDAP')}
           />
           <Switch
-            checked={this.state.inMongo}
+            checked={this.props.user.inMongo === 'Yes'}
             label="Mongo"
             onChange={this.handleChange.bind(this, 'inMongo')}
           />

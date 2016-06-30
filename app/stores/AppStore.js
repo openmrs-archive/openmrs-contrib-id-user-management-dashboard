@@ -15,12 +15,26 @@ class AppStore {
     });
     this.state = {
       allItems: [],
-      filters: ['inDLAP', 'inMongo'],
-      query: '',
-      allColumns: [],
       filteredItems: [],
-      groups: ['admin', 'user', 'writer'],
-      selectedColumns: []
+      allColumns: {
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        id: 'ID',
+        inLDAP: 'LDAP',
+        inMongo: 'Mongo'
+      },
+      columns: ['id', 'lastName', 'inLDAP'],
+      allFilters: ['inLDAP', 'inMongo'],
+      filters: [],
+      query: '',
+      allGroups: ['admin', 'user', 'writer'],
+      userModel: {
+        firstName: {type: String},
+        lastName: {type: String},
+        id: {type: String},
+        inMongo: {type: String},
+        inLDAP: {type: String}
+      }
     };
     // temporary data
     this.state.allItems.push({
@@ -45,13 +59,30 @@ class AppStore {
     return this.setState({filters});
   }
   setQuery(query) {
-    var filteredItems = _.filter(this.state.allItems, function(item) {
+    let filteredItems = _.filter(this.state.allItems, function(item) {
       return item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     this.setState({query, filteredItems});
   }
-  setColumns(selectedColumns) {
-    return this.setState({selectedColumns});
+  setColumns(columns) {
+    let currentColumns = this.state.columns;
+    let diffAdd = _.difference(columns, currentColumns);
+    let diffRemove = _.difference(currentColumns, columns);
+    if (diffAdd.length) {
+      let filteredItems = _.map(this.state.filteredItems, function (item) {
+        item[diffAdd[0]] = this.state.allItems[diffAdd[0]];
+        return item;
+      });
+      return this.setState({columns, filteredItems});
+    }
+    else if (diffRemove.length) {
+      let filteredItems = _.map(this.state.filteredItems, function (item) {
+        item[diffRemove[0]] = undefined;
+        return item;
+      });
+      return this.setState({columns, filteredItems});
+    }
+    return this.setState({columns});
   }
 }
 
