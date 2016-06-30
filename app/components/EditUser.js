@@ -4,18 +4,19 @@ import Button from 'react-toolbox/lib/button';
 import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
 
+import AppStore from '../stores/AppStore';
+
 import MultiComboBox from './MultiComboBox';
 
 class EditUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allGroups: props.allGroups,
+      allGroups: AppStore.state.allGroups,
       user: props.user,
       active: false,
       snackbar: false
     };
-    console.log('user: ', props.user)
   }
 
   componentWillReceiveProps(newProps) {
@@ -34,11 +35,11 @@ class EditUser extends React.Component {
     }
   };
   handleSnackbarClick = () => {
-    this.setState({ snackbar: false });
+    this.setState({snackbar: false});
   };
 
   handleSnackbarTimeout = () => {
-    this.setState({ snackbar: false });
+    this.setState({snackbar: false});
   };
 
   actions = [

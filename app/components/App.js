@@ -66,14 +66,8 @@ class App extends React.Component {
                         dialogLabel={'Choose columns to display'}
                         dialogTitle={'Display selected columns'}/>
             </Col>
-            <Col md style={{marginTop: '20px'}}>
-              <ComboBox label={statGroups}
-                        source={groups}
-                        dialogLabel={'Set groups'}
-                        dialogTitle={'LDAP groups user belongs to'}/>
-            </Col>
           </Row>
-          <DataGrid model={this.state.userModel} source={this.state.filteredItems} allGroups={this.state.allGroups}/>
+          <DataGrid model={this.state.userModel}/>
         </Grid>
       </div>
     )
