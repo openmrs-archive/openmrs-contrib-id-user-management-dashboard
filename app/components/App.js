@@ -73,7 +73,7 @@ class App extends React.Component {
                         dialogTitle={'LDAP groups user belongs to'}/>
             </Col>
           </Row>
-          <DataGrid model={this.state.userModel} source={this.state.filteredItems} groups={this.state.groups}/>
+          <DataGrid model={this.state.userModel} source={this.state.filteredItems} allGroups={this.state.allGroups}/>
         </Grid>
       </div>
     )

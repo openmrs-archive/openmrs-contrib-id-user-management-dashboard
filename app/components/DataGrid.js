@@ -13,6 +13,7 @@ class DataGrid extends React.Component {
     this.state = { 
       model: props.model,
       selected: [],
+      allGroups: props.allGroups,
       source: props.source, 
       prevSelected: []
     };
@@ -34,7 +35,7 @@ class DataGrid extends React.Component {
   render () {
     var editUser;
     if (this.state.selected && this.state.selected.length) {
-      editUser = <EditUser mini source={this.props.groups} user={this.state.source[this.state.selected[0]]}/>;
+      editUser = <EditUser mini allGroups={this.state.allGroups} user={this.state.source[this.state.selected[0]]}/>;
     }
     else {
       editUser = <div></div>;

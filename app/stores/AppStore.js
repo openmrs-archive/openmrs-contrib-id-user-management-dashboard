@@ -17,9 +17,9 @@ class AppStore {
       allItems: [],
       filteredItems: [],
       allColumns: {
+        id: 'ID',
         firstName: 'First Name',
         lastName: 'Last Name',
-        id: 'ID',
         inLDAP: 'LDAP',
         inMongo: 'Mongo'
       },
@@ -33,21 +33,22 @@ class AppStore {
         lastName: {type: String},
         id: {type: String},
         inMongo: {type: String},
-        inLDAP: {type: String}
+        inLDAP: {type: String},
+        groups: {type: [String]}
       }
     };
     // temporary data
     this.state.allItems.push({
-      name: 'Javi Jimenez', inLDAP: 'Yes', inMongo: 'No'
+      id: '124124', firstName: 'Javi', lastName: 'Jimenez', inLDAP: 'Yes', inMongo: 'No', groups: ['user']
     });
     this.state.allItems.push({
-      name: 'Mark Simons', inLDAP: 'Yes', inMongo: 'Yes'
+      id: '234234', firstName: 'Mark', lastName: 'Simons', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
     });
     this.state.allItems.push({
-      name: 'David de Hea', inLDAP: 'No', inMongo: 'Yes'
+      id: '124124124', firstName: 'David', lastName: 'de Hea', inLDAP: 'No', inMongo: 'Yes', groups: ['user', 'admin']
     });
     this.state.allItems.push({
-      name: 'Andriy Shevchenko', inLDAP: 'Yes', inMongo: 'Yes'
+      id: '12312', firstName: 'Andriy', lastName: 'Shevchenko', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
     });
     this.state.filteredItems = this.state.allItems;
   }

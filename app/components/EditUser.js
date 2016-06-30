@@ -10,9 +10,16 @@ class EditUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      allGroups: props.allGroups,
+      user: props.user,
       active: false,
       snackbar: false
     };
+    console.log('user: ', props.user)
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({user: newProps.user});
   }
 
   handleToggle = () => {
@@ -42,21 +49,21 @@ class EditUser extends React.Component {
   render () {
     return (
       <div>
-        <Button label={'Configure'} icon={'mode_edit'} onClick={this.handleToggle} disabled={this.props.disabled} />
+        <Button label={'Configure'} icon={'mode_edit'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={'Edit User "' + this.props.user.name + '"'}>
-          
+          title={'Edit User "' + this.state.user.firstName + ' ' + this.state.user.lastName + '"'}>
+          <MultiComboBox source={this.state.allGroups} value={this.state.user.groups} dialogLabel={'Select groups'}/>
           <Switch
-            checked={this.props.user.inLDAP === 'Yes'}
+            checked={this.state.user.inLDAP === 'Yes'}
             label="LDAP"
             onChange={this.handleChange.bind(this, 'inLDAP')}
           />
           <Switch
-            checked={this.props.user.inMongo === 'Yes'}
+            checked={this.state.user.inMongo === 'Yes'}
             label="Mongo"
             onChange={this.handleChange.bind(this, 'inMongo')}
           />

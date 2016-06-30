@@ -1,17 +1,23 @@
 import React from 'react';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
-import theme from './MultiComboBox.scss';
+import theme from './multicombobox.scss';
 
 class MultiComboBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      multiple: []
+      value: props.value || [],
+      source: props.source,
+      label: props.dialogLabel
     };
   }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({value: newProps.value, source: newProps.source});
+  }
+
   handleMultipleChange = (value) => {
-    this.setState({multiple: value});
+    this.setState({value});
   };
 
   render () {
@@ -19,12 +25,12 @@ class MultiComboBox extends React.Component {
       <div>
         <Autocomplete
           direction="down"
-          label={this.props.dialogLabel}
+          label={this.state.label}
           multiple={true}
           onChange={this.handleMultipleChange}
-          source={this.props.source}
+          source={this.state.source}
           theme={theme}
-          value={this.state.multiple}/>
+          value={this.state.value}/>
       </div>
     );
   }

@@ -35,15 +35,15 @@ class ComboBox extends React.Component {
   render () {
     return (
       <div>
-        <Button label={this.props.label} onClick={this.handleToggle} />
+        <Button label={this.state.label} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={this.state.dialogTitle}>
+          title={this.state.title}>
+          <MultiComboBox source={this.state.source} value={this.state.value} dialogLabel={this.state.label}/>
         </Dialog>
-        <MultiComboBox source={this.props.source} dialogLabel={this.props.dialogLabel}/>
       </div>
     );
   }
