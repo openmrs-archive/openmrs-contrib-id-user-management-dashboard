@@ -5,11 +5,11 @@ import Actions        from '../actions/AppActions';
 
 class AppStore {
   constructor() {
-    let {setGridData, setFilter, setQuery, setColumns} = Actions;
+    let {setGridData, setFilters, setQuery, setColumns} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
-      setFilter: setFilter,
+      setFilters: setFilters,
       setQuery: setQuery,
       setColumns: setColumns
     });
@@ -27,7 +27,10 @@ class AppStore {
         inMongo: 'Mongo'
       },
       columns: ['id', 'lastName', 'inLDAP'],
-      allFilters: ['inLDAP', 'inMongo'],
+      allFilters: {
+        inLDAP: 'In LDAP',
+        inMongo: 'In Mongo'
+      },
       filters: [],
       query: '',
       allGroups: ['admin', 'user', 'writer'],
@@ -65,8 +68,9 @@ class AppStore {
           || item.lastName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1;
       if (query) {
         var state = true;
-        _.each(that.state.filters.length, (el) => {
-          state && (state = 'Yes' !== item[el]);
+        _.each(that.state.filters, (el) => {
+          console.log('el: ', el)
+          state && (state = 'Yes' === item[el]);
         });
         return state;
       }
@@ -98,17 +102,18 @@ class AppStore {
   setGridData(allItems) {
     return this.setState({allItems});
   }
-  setFilter(filters) {
+  setFilters(filters) {
+    this.setState({filters});
     this.applyFilters();
-    return this.setState({filters});
   }
   setQuery(query) {
+    this.setState({query});
     this.applyFilters();
-    return this.setState({query});
   }
   setColumns(columns) {
+    this.setState({columns});
     this.applyFilters();
-    return this.setState({columns});
+    
   }
 }
 

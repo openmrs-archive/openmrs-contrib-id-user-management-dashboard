@@ -18,6 +18,7 @@ class MultiComboBox extends React.Component {
 
   handleMultipleChange = (value) => {
     this.setState({value});
+    this.props.action(value);
   };
 
   render () {

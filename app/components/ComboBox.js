@@ -9,12 +9,16 @@ class ComboBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      action: props.action || function() {},
       active: false,
       value: props.value,
       source: props.source,
       label: props.dialogLabel,
       title: props.dialogTitle
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -24,12 +28,19 @@ class ComboBox extends React.Component {
   handleToggle = () => {
     this.setState({active: !this.state.active});
   };
-  
-  handleChange = AppActions.setColumns;
+
+  handleChange = (value) => {
+    this.setState({value});
+  };
+
+  submitForm = () => {
+    this.props.action(this.state.value);
+    this.handleToggle();
+  };
 
   actions = [
     { label: "Cancel", onClick: this.handleToggle },
-    { label: "Ok", onClick: this.handleToggle }
+    { label: "Ok", onClick: this.submitForm }
   ];
 
   render () {
@@ -42,7 +53,7 @@ class ComboBox extends React.Component {
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
           title={this.state.title}>
-          <MultiComboBox source={this.state.source} value={this.state.value} dialogLabel={this.state.label}/>
+          <MultiComboBox action={this.handleChange} source={this.state.source} value={this.state.value} dialogLabel={this.state.label}/>
         </Dialog>
       </div>
     );

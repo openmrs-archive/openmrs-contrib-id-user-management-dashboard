@@ -8,15 +8,6 @@ import ComboBox from './ComboBox';
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
 
-/*
- * Static data (demo)
- */
-const filter = ['LDAP', 'Mongo'];
-const groups = ['User', 'Admin', 'Other Group'];
-
-const statFilter = 'Show: All';
-const statGroups = 'Groups: User, Admin';
-
 class App extends React.Component {
 
   constructor(props) {
@@ -54,13 +45,14 @@ class App extends React.Component {
           </Row>
           <Row>
             <Col md style={{marginTop: '20px'}}>
-              <ComboBox label={statFilter}
-                        source={filter}
+              <ComboBox source={this.state.allFilters}
+                        value={this.state.filters}
+                        action={AppActions.setFilters}
                         dialogLabel={'Choose types to filter'}
                         dialogTitle={'Filter data'}/>
             </Col>
             <Col md style={{marginTop: '20px'}}>
-              <ComboBox label={'Display: '}
+              <ComboBox action={AppActions.setColumns}
                         value={this.state.columns}
                         source={this.state.allColumns}
                         dialogLabel={'Choose columns to display'}
