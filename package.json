@@ -59,6 +59,7 @@
     "classnames": "^2.2.5",
     "flexboxgrid": "^6.3.0",
     "lodash": "^4.13.1",
-    "react-flexbox-grid": "^0.9.6"
+    "react-flexbox-grid": "^0.9.6",
+    "serve-favicon": "^2.3.0"
   }
 }
