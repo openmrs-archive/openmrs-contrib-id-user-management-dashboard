@@ -5,13 +5,14 @@ import Actions        from '../actions/AppActions';
 
 class AppStore {
   constructor() {
-    let {setGridData, setFilters, setQuery, setColumns} = Actions;
+    let {setGridData, setFilters, setQuery, setColumns, updateUser} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
       setFilters: setFilters,
       setQuery: setQuery,
-      setColumns: setColumns
+      setColumns: setColumns,
+      updateUser: updateUser
     });
 
     this.applyFilters = this.applyFilters.bind(this);
@@ -24,7 +25,8 @@ class AppStore {
         firstName: 'First Name',
         lastName: 'Last Name',
         inLDAP: 'LDAP',
-        inMongo: 'Mongo'
+        inMongo: 'Mongo',
+        groups: 'Groups'
       },
       columns: ['id', 'lastName', 'inLDAP'],
       allFilters: {
@@ -69,7 +71,6 @@ class AppStore {
       if (query) {
         var state = true;
         _.each(that.state.filters, (el) => {
-          console.log('el: ', el)
           state && (state = 'Yes' === item[el]);
         });
         return state;
@@ -113,7 +114,16 @@ class AppStore {
   setColumns(columns) {
     this.setState({columns});
     this.applyFilters();
-    
+  }
+  updateUser(user) {
+    let items = this.state.allItems;
+    let old = _.find(items, (item) => {
+      return user.id === item.id;
+    });
+    let index = items.indexOf(old);
+    if (index !== -1) items[index] = user;
+    this.setState({allItems: items});
+    this.applyFilters();
   }
 }
 

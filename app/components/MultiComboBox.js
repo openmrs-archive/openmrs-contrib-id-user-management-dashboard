@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import theme from './multicombobox.scss';
 
@@ -17,15 +18,25 @@ class MultiComboBox extends React.Component {
   }
 
   handleMultipleChange = (value) => {
-    this.setState({value});
-    this.props.action(value);
+    let current = this.state.value;
+    let newItems = _.difference(value, current);
+    let oldItems = _.difference(current, value);
+    if (newItems.length) {
+      current.push(newItems[0]);
+    }
+    else if (oldItems.length) {
+      let index = current.indexOf(oldItems[0]);
+      current.splice(index, 1);
+    }
+    this.setState({value: current});
+    this.props.action(current);
   };
 
   render () {
     return (
       <div>
         <Autocomplete
-          direction="down"
+          direction={'down'}
           label={this.state.label}
           multiple={true}
           onChange={this.handleMultipleChange}

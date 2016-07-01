@@ -5,6 +5,7 @@ import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
 
 import AppStore from '../stores/AppStore';
+import AppActions from '../actions/AppActions';
 
 import MultiComboBox from './MultiComboBox';
 
@@ -17,6 +18,8 @@ class EditUser extends React.Component {
       active: false,
       snackbar: false
     };
+    
+    this.updateGroups = this.updateGroups.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -28,9 +31,10 @@ class EditUser extends React.Component {
   };
 
   handleChange = (field, value) => {
-    var current = this.state[field];
-    if (current == 'No' && value) {
-      this.setState({...this.state, [field]: 'Yes'});
+    let user = this.state.user;
+    if (user[field] == 'No' && value) {
+      user[field] = 'Yes';
+      this.setState({user});
       this.setState({snackbar:true});
     }
   };
@@ -41,10 +45,21 @@ class EditUser extends React.Component {
   handleSnackbarTimeout = () => {
     this.setState({snackbar: false});
   };
+  
+  updateGroups(value) {
+    let user = this.state.user;
+    user.groups = value;
+    this.setState({user});
+  }
+  
+  submitForm = () => {
+    AppActions.updateUser(this.state.user);
+    this.setState({active: !this.state.active});
+  };
 
   actions = [
     { label: "Cancel", onClick: this.handleToggle },
-    { label: "Save", onClick: this.handleToggle }
+    { label: "Save", onClick: this.submitForm }
   ];
 
   render () {
@@ -57,7 +72,7 @@ class EditUser extends React.Component {
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
           title={'Edit User "' + this.state.user.firstName + ' ' + this.state.user.lastName + '"'}>
-          <MultiComboBox source={this.state.allGroups} value={this.state.user.groups} dialogLabel={'Select groups'}/>
+          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={this.state.user.groups} dialogLabel={'Select groups'}/>
           <Switch
             checked={this.state.user.inLDAP === 'Yes'}
             label="LDAP"

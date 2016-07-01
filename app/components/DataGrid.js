@@ -2,6 +2,9 @@ import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
 import Link from 'react-toolbox/lib/link';
 import React from 'react';
+import _ from 'lodash';
+
+import AppStore from '../stores/AppStore';
 
 import EditUser from './EditUser';
 
@@ -34,7 +37,12 @@ class DataGrid extends React.Component {
   render () {
     var editUser;
     if (this.state.selected && this.state.selected.length) {
-      editUser = <EditUser mini user={this.state.source[this.state.selected[0]]}/>;
+      let user = this.state.source[this.state.selected[0]];
+      let allItems = AppStore.getState().allItems;
+      let userGlobal = _.find(allItems, (item) => {
+        return item.id === user.id;
+      });
+      editUser = <EditUser mini user={userGlobal}/>;
     }
     else {
       editUser = <div></div>;

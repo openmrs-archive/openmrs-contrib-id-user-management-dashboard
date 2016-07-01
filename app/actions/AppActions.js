@@ -4,5 +4,6 @@ export default AltInstance.generateActions(
   'setGridData', 
   'setQuery', 
   'setFilters', 
-  'setColumns'
+  'setColumns',
+  'updateUser'
 );
