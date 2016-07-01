@@ -7,7 +7,7 @@ const config = require('./webpack.config');
 
 const compiler = webpack(config);
 
-exports = module.exports = function(app) {
+module.exports = function(app) {
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath,
