@@ -65,7 +65,7 @@ class EditUser extends React.Component {
   render () {
     return (
       <div>
-        <Button label={'Configure'} icon={'mode_edit'} onClick={this.handleToggle} />
+        <Button label={'Edit User "' + this.state.user.firstName + '"'} icon={'mode_edit'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
