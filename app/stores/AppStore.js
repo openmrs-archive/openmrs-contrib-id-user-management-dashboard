@@ -13,6 +13,9 @@ class AppStore {
       setQuery: setQuery,
       setColumns: setColumns
     });
+
+    this.applyFilters = this.applyFilters.bind(this);
+
     this.state = {
       allItems: [],
       filteredItems: [],
@@ -28,7 +31,8 @@ class AppStore {
       filters: [],
       query: '',
       allGroups: ['admin', 'user', 'writer'],
-      userModel: {
+      userModel: {},
+      defaultModel: {
         firstName: {type: String},
         lastName: {type: String},
         id: {type: String},
@@ -50,43 +54,60 @@ class AppStore {
     this.state.allItems.push({
       id: '12312', firstName: 'Andriy', lastName: 'Shevchenko', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
     });
-    this.state.filteredItems = this.state.allItems;
+    this.applyFilters(true);
   }
   
-  applyFilters() {
-    
+  applyFilters(init) {
+    let that = this;
+    // temporary (demo only)
+    let filteredFirstItems = _.filter(this.state.allItems, (item) => {
+      var query = item.firstName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1
+          || item.lastName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1;
+      if (query) {
+        var state = true;
+        _.each(that.state.filters.length, (el) => {
+          state && (state = 'Yes' !== item[el]);
+        });
+        return state;
+      }
+      return false;
+    });
+    let filteredItems = _.map(filteredFirstItems, (item) => {
+      let obj = {};
+      for (var key in item) {
+        if (key && that.state.columns.indexOf(key) !== -1) {
+          obj[key] = item[key];
+        }
+      }
+      return obj;
+    });
+    // apply user model
+    let userModel = {};
+    _.each(this.state.columns, (column) => {
+      userModel[column] = that.state.defaultModel[column];
+    });
+    if (!init) {
+      this.setState({filteredItems, userModel});
+    }
+    else {
+      this.state.filteredItems = filteredItems;
+      this.state.userModel = userModel;
+    }
   }
 
   setGridData(allItems) {
     return this.setState({allItems});
   }
   setFilter(filters) {
+    this.applyFilters();
     return this.setState({filters});
   }
   setQuery(query) {
-    let filteredItems = _.filter(this.state.allItems, function(item) {
-      return item.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-    });
-    this.setState({query, filteredItems});
+    this.applyFilters();
+    return this.setState({query});
   }
   setColumns(columns) {
-    let currentColumns = this.state.columns;
-    let diffAdd = _.difference(columns, currentColumns);
-    let diffRemove = _.difference(currentColumns, columns);
-    if (diffAdd.length) {
-      let filteredItems = _.map(this.state.filteredItems, function (item) {
-        item[diffAdd[0]] = this.state.allItems[diffAdd[0]];
-        return item;
-      });
-      return this.setState({columns, filteredItems});
-    }
-    else if (diffRemove.length) {
-      let filteredItems = _.map(this.state.filteredItems, function (item) {
-        item[diffRemove[0]] = undefined;
-        return item;
-      });
-      return this.setState({columns, filteredItems});
-    }
+    this.applyFilters();
     return this.setState({columns});
   }
 }

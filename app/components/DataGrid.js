@@ -19,7 +19,7 @@ class DataGrid extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({source: newProps.source});
+    this.setState({source: newProps.source, model: newProps.model});
   }
 
   handleSelect = (selected) => {
