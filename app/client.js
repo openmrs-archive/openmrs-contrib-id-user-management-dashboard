@@ -6,7 +6,6 @@ import App from './components/App.js';
 
 ReactDOM.render((
   <Router history={browserHistory}>
-    <Route path="/user-dashboard" component={App}>
-    </Route>
+    <Route path="/user-dashboard" component={App}/>
   </Router>
 ), document.getElementById('app'));

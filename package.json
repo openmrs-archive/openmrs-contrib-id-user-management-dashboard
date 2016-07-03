@@ -59,7 +59,6 @@
     "react-dom": "^15.0.0",
     "react-toolbox": "^1.0.0",
     "react-flexbox-grid": "^0.9.6",
-    "serve-favicon": "^2.3.0",
     "react-router": "^2.5.2"
   }
 }

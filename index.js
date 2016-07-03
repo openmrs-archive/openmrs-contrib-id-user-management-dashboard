@@ -17,7 +17,6 @@ module.exports = function(app) {
   }));
 
   app.use(require('webpack-hot-middleware')(compiler));
-  app.use(require('serve-favicon')(__dirname + '/app/favicon.png'));
 
   app.get('/user-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, './app/index.html'));
