@@ -1,6 +1,7 @@
 import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
 import Link from 'react-toolbox/lib/link';
+import Input from 'react-toolbox/lib/input';
 import React from 'react';
 import _ from 'lodash';
 
@@ -15,6 +16,9 @@ class DataGrid extends React.Component {
     
     this.state = { 
       model: props.model,
+      current: props.currentPage || 1,
+      size: props.size || 20,
+      pages: props.pages || [1, 2, 3],
       selected: [],
       source: props.source,
       prevSelected: []
@@ -47,6 +51,8 @@ class DataGrid extends React.Component {
     else {
       editUser = <div></div>;
     }
+    var pages = this.state.pages;
+    var current = this.state.current;
     return (
       <Grid>
         <Row>
@@ -63,11 +69,29 @@ class DataGrid extends React.Component {
           <Col md={2}>
             {editUser}
           </Col>
-          <Col md={2} mdOffset={8}>
-            <Row>
-              <Link style={{margin: '5px', marginLeft: '15px'}} label={'First'} />
-              <Link style={{margin: '5px'}} active label={'1'} />
-              <Link style={{margin: '5px'}} label={'Last'} />
+          <Col md={1} mdOffset={7}>
+            <Input type='text' value={20}/>
+          </Col>
+          <Col md={2}>
+            <Row style={{marginTop: '20px'}}>
+              <Link style={{margin: '5px', marginLeft: '15px'}} >
+                &#171;
+              </Link>
+              {pages.map(function(page) {
+                if (current == page) {
+                  return <Link style={{margin: '5px'}} active>
+                    {page}
+                  </Link>
+                }
+                else {
+                  return <Link style={{margin: '5px'}}>
+                    {page}
+                  </Link>
+                }
+              })}
+              <Link style={{margin: '5px'}}>
+                &#187;
+              </Link>  
             </Row>
           </Col>
         </Row>

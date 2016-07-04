@@ -5,5 +5,6 @@ export default AltInstance.generateActions(
   'setQuery',
   'setFilters', 
   'setColumns',
-  'updateUser'
+  'updateUser',
+  'setCurrentPage'
 );

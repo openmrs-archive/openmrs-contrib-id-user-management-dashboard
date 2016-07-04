@@ -3,16 +3,19 @@ import _ from 'lodash';
 import AltInstance    from '../lib/AltInstance';
 import Actions        from '../actions/AppActions';
 
+import TempData       from './temp';
+
 class AppStore {
   constructor() {
-    let {setGridData, setFilters, setQuery, setColumns, updateUser} = Actions;
+    let {setGridData, setFilters, setQuery, setColumns, updateUser, setCurrentPage} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
       setFilters: setFilters,
       setQuery: setQuery,
       setColumns: setColumns,
-      updateUser: updateUser
+      updateUser: updateUser,
+      setCurrentPage: setCurrentPage
     });
 
     this.applyFilters = this.applyFilters.bind(this);
@@ -44,21 +47,16 @@ class AppStore {
         inMongo: {type: String},
         inLDAP: {type: String},
         groups: {type: [String]}
-      }
+      },
+      // pagination
+      pagedItems: [],
+      size: 10,
+      currentPage: 1,
+      pages: [],
+      pageLinksOnScreen: 10
     };
     // temporary data
-    this.state.allItems.push({
-      id: '124124', firstName: 'Javi', lastName: 'Jimenez', inLDAP: 'Yes', inMongo: 'No', groups: ['user']
-    });
-    this.state.allItems.push({
-      id: '234234', firstName: 'Mark', lastName: 'Simons', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
-    });
-    this.state.allItems.push({
-      id: '124124124', firstName: 'David', lastName: 'de Hea', inLDAP: 'No', inMongo: 'Yes', groups: ['user', 'admin']
-    });
-    this.state.allItems.push({
-      id: '12312', firstName: 'Andriy', lastName: 'Shevchenko', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
-    });
+    this.state.allItems = TempData;
     this.applyFilters(true);
   }
   
@@ -98,6 +96,7 @@ class AppStore {
       this.state.filteredItems = filteredItems;
       this.state.userModel = userModel;
     }
+    this.setCurrentPage(1, init);
   }
 
   setGridData(allItems) {
@@ -124,6 +123,35 @@ class AppStore {
     if (index !== -1) items[index] = user;
     this.setState({allItems: items});
     this.applyFilters();
+  }
+  setCurrentPage(currentPage, init) {
+    let count = Math.ceil(this.state.filteredItems.length / this.state.size);
+    if (!currentPage || typeof currentPage !== 'number' || currentPage > count) {
+      currentPage = 1;
+    }
+    let offset = (currentPage - 1) * this.state.size;
+    let pagedItems = this.state.filteredItems.slice(offset, this.state.size);
+    let links = this.state.pageLinksOnScreen;
+    let pages;
+    if (currentPage <= links) {
+      pages = _.range(1, count + 1, 1);
+    }
+    else {
+      if (count - currentPage > links) {
+        pages = _.range(currentPage - Math.ceil(links/2), currentPage + Math.ceil(links/2), 1);
+      }
+      else {
+        pages = _.range(count - links, count, 1);
+      }
+    }
+    if (!init) {
+      this.setState({pagedItems, pages, currentPage});
+    }
+    else {
+      this.state.pagedItems = pagedItems;
+      this.state.pages = pages;
+      this.state.currentPage = currentPage;
+    }
   }
 }
 
