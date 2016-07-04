@@ -1,6 +1,6 @@
 import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
-import Link from 'react-toolbox/lib/link';
+import {Link} from 'react-router';
 import Input from 'react-toolbox/lib/input';
 import React from 'react';
 import _ from 'lodash';
@@ -17,8 +17,8 @@ class DataGrid extends React.Component {
     this.state = { 
       model: props.model,
       current: props.currentPage || 1,
-      size: props.size || 20,
-      pages: props.pages || [1, 2, 3],
+      size: props.size,
+      pages: props.pages,
       selected: [],
       source: props.source,
       prevSelected: []
@@ -70,26 +70,26 @@ class DataGrid extends React.Component {
             {editUser}
           </Col>
           <Col md={1} mdOffset={7}>
-            <Input type='text' value={20}/>
+            <Input type='text' value={this.state.size}/>
           </Col>
           <Col md={2}>
             <Row style={{marginTop: '20px'}}>
-              <Link style={{margin: '5px', marginLeft: '15px'}} >
+              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px'}} >
                 &#171;
               </Link>
               {pages.map(function(page) {
                 if (current == page) {
-                  return <Link style={{margin: '5px'}} active>
+                  return <Link style={{margin: '5px'}} active to={{pathname: 'user-dashboard', query: {page: page}}}>
                     {page}
                   </Link>
                 }
                 else {
-                  return <Link style={{margin: '5px'}}>
+                  return <Link style={{margin: '5px'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
                     {page}
                   </Link>
                 }
               })}
-              <Link style={{margin: '5px'}}>
+              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px'}}>
                 &#187;
               </Link>  
             </Row>

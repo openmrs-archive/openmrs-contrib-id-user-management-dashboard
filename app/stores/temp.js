@@ -58,5 +58,8 @@ module.exports = [
   },
   {
     id: '12312', firstName: 'Andriy', lastName: 'Shevchenko', inLDAP: 'Yes', inMongo: 'Yes', groups: ['user']
+  },
+  {
+    id: '124124124', firstName: 'David', lastName: 'de Hea', inLDAP: 'No', inMongo: 'Yes', groups: ['user', 'admin']
   }
 ];

@@ -16,6 +16,13 @@ class App extends React.Component {
     this.onStoreChange = this.onStoreChange.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    let query = newProps.location.query;
+    if (query && query.page) {
+      AppActions.setCurrentPage(parseInt(query.page));
+    }
+  }
+
   componentDidMount() {
     AppStore.listen(this.onStoreChange);
   }

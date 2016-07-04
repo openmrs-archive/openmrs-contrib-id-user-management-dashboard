@@ -130,7 +130,7 @@ class AppStore {
       currentPage = 1;
     }
     let offset = (currentPage - 1) * this.state.size;
-    let pagedItems = this.state.filteredItems.slice(offset, this.state.size);
+    let pagedItems = this.state.filteredItems.slice(offset, offset + this.state.size);
     let links = this.state.pageLinksOnScreen;
     let pages;
     if (currentPage <= links) {
