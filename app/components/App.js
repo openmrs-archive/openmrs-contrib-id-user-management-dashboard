@@ -13,6 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = AppStore.getState();
+    //AppActions.setCurrentPage(props.location.query.page, true);
     this.onStoreChange = this.onStoreChange.bind(this);
   }
 

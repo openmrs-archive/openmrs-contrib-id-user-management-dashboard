@@ -26,7 +26,13 @@ class DataGrid extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({source: newProps.source, model: newProps.model});
+    this.setState({
+      source: newProps.source, 
+      model: newProps.model, 
+      pages: newProps.pages,
+      size: newProps.size,
+      current: newProps.currentPage
+    });
   }
 
   handleSelect = (selected) => {
@@ -79,7 +85,7 @@ class DataGrid extends React.Component {
               </Link>
               {pages.map(function(page) {
                 if (current == page) {
-                  return <Link style={{margin: '5px'}} active to={{pathname: 'user-dashboard', query: {page: page}}}>
+                  return <Link style={{margin: '5px', color: 'red'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
                     {page}
                   </Link>
                 }
