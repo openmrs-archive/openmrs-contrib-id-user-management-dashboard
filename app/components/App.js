@@ -65,10 +65,11 @@ class App extends React.Component {
                         dialogTitle={'Display selected columns'}/>
             </Col>
           </Row>
-          <DataGrid source={this.state.pagedItems} 
+          <DataGrid source={this.state.pagedItems}
                     model={this.state.userModel}
                     size={this.state.size}
                     currentPage={this.state.currentPage}
+                    lastPage={this.state.lastPage}
                     pages={this.state.pages}/>
         </Grid>
       </div>

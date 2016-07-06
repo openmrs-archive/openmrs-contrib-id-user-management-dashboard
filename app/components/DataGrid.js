@@ -16,7 +16,8 @@ class DataGrid extends React.Component {
     
     this.state = { 
       model: props.model,
-      current: props.currentPage || 1,
+      current: props.currentPage,
+      last: props.lastPage,
       size: props.size,
       pages: props.pages,
       selected: [],
@@ -27,11 +28,12 @@ class DataGrid extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.setState({
-      source: newProps.source, 
-      model: newProps.model, 
+      source: newProps.source,
+      model: newProps.model,
       pages: newProps.pages,
       size: newProps.size,
-      current: newProps.currentPage
+      current: newProps.currentPage,
+      last: newProps.lastPage
     });
   }
 
@@ -45,7 +47,7 @@ class DataGrid extends React.Component {
   };
 
   render () {
-    var editUser;
+    let editUser;
     if (this.state.selected && this.state.selected.length) {
       let user = this.state.source[this.state.selected[0]];
       let allItems = AppStore.getState().allItems;
@@ -57,8 +59,10 @@ class DataGrid extends React.Component {
     else {
       editUser = <div></div>;
     }
-    var pages = this.state.pages;
-    var current = this.state.current;
+    let pages = this.state.pages;
+    let current = this.state.current;
+    let last = this.state.last;
+    
     return (
       <Grid>
         <Row>
@@ -95,7 +99,7 @@ class DataGrid extends React.Component {
                   </Link>
                 }
               })}
-              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px'}}>
+              <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px'}}>
                 &#187;
               </Link>  
             </Row>

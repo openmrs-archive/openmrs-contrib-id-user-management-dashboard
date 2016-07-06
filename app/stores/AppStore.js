@@ -52,6 +52,7 @@ class AppStore {
       pagedItems: [],
       size: 10,
       currentPage: 1,
+      lastPage: 1,
       pages: [],
       pageLinksOnScreen: 10
     };
@@ -144,13 +145,15 @@ class AppStore {
         pages = _.range(count - links, count, 1);
       }
     }
+    let lastPage = count;
     if (!init) {
-      this.setState({pagedItems, pages, currentPage});
+      this.setState({pagedItems, pages, currentPage, lastPage});
     }
     else {
       this.state.pagedItems = pagedItems;
       this.state.pages = pages;
       this.state.currentPage = currentPage;
+      this.state.lastPage = lastPage;
     }
   }
 }
