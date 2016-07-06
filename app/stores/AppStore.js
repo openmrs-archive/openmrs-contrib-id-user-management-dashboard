@@ -127,6 +127,10 @@ class AppStore {
   }
   setCurrentPage(currentPage, init) {
     let count = Math.ceil(this.state.filteredItems.length / this.state.size);
+    // if there no results
+    if (!count) {
+      ++count;
+    }
     if (!currentPage || typeof currentPage !== 'number' || currentPage > count) {
       currentPage = 1;
     }
