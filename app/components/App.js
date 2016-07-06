@@ -47,9 +47,7 @@ class App extends React.Component {
         <Header />
         <Grid>
           <Row>
-            <Col md={12}>
-              <SearchBox label={'Filter...'} onChange={this.onSearchBoxChange}/>
-            </Col>
+            <SearchBox label={'Filter...'} onChange={this.onSearchBoxChange}/>
           </Row>
           <Row>
             <Col md style={{marginTop: '20px'}}>
