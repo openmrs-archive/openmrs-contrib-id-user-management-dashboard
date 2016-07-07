@@ -3,6 +3,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
+import _ from 'lodash';
 
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
@@ -14,7 +15,7 @@ class EditUser extends React.Component {
     super(props);
     this.state = {
       allGroups: AppStore.state.allGroups,
-      user: props.user,
+      users: props.users,
       active: false,
       snackbar: false
     };
@@ -23,7 +24,7 @@ class EditUser extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({user: newProps.user});
+    this.setState({users: newProps.users});
   }
 
   handleToggle = () => {
@@ -31,11 +32,17 @@ class EditUser extends React.Component {
   };
 
   handleChange = (field, value) => {
-    let user = this.state.user;
-    if (user[field] == 'No' && value) {
-      user[field] = 'Yes';
-      this.setState({user});
-      this.setState({snackbar:true});
+    let users = this.state.users;
+    let updated = false;
+    _.each(users, (user) => {
+      if (user[field] === 'No' && value) {
+        user[field] = 'Yes';
+        updated = true;
+      }
+    });
+    if (updated) {
+      this.setState({users});
+      this.setState({snackbar: true});
     }
   };
   handleSnackbarClick = () => {
@@ -47,9 +54,11 @@ class EditUser extends React.Component {
   };
   
   updateGroups(value) {
-    let user = this.state.user;
-    user.groups = value;
-    this.setState({user});
+    let users = this.state.users;
+    _.each(users, (user) => {
+      user.groups = value;
+    });
+    this.setState({users});
   }
   
   submitForm = () => {
@@ -63,23 +72,44 @@ class EditUser extends React.Component {
   ];
 
   render () {
+    let label, groups, allInMongo, allInLDAP, sucessLabel;
+    if (this.state.users.length === 1) {
+      label = `Edit User "${this.state.users[0].firstName}"`;
+      groups = this.state.users[0].groups;
+      sucessLabel =  `User was successfully updated`;
+    }
+    else {
+      label = `Edit ${this.state.users.length} users`;
+      groups = [];
+      sucessLabel = `${this.state.users.length} users were successfully updated`;
+    }
+    allInMongo = true;
+    allInLDAP = true;
+    _.each(this.state.users, (user) => {
+      if (allInLDAP) {
+        allInLDAP = user.inLDAP === 'Yes';
+      }
+      if (allInMongo) {
+        allInMongo = user.inMongo === 'Yes';
+      }
+    });
     return (
       <div style={{marginTop: '15px'}} >
-        <Button label={'Edit User "' + this.state.user.firstName + '"'} icon={'mode_edit'} onClick={this.handleToggle} />
+        <Button label={label} icon={'mode_edit'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={'Edit User "' + this.state.user.firstName + ' ' + this.state.user.lastName + '"'}>
-          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={this.state.user.groups} dialogLabel={'Select groups'}/>
+          title={label}>
+          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={groups} dialogLabel={'Select groups'}/>
           <Switch
-            checked={this.state.user.inLDAP === 'Yes'}
+            checked={allInLDAP}
             label="LDAP"
             onChange={this.handleChange.bind(this, 'inLDAP')}
           />
           <Switch
-            checked={this.state.user.inMongo === 'Yes'}
+            checked={allInMongo}
             label="Mongo"
             onChange={this.handleChange.bind(this, 'inMongo')}
           />
@@ -88,7 +118,7 @@ class EditUser extends React.Component {
           action='Hide'
           active={this.state.snackbar}
           icon='question_answer'
-          label='User was successfully updated'
+          label={sucessLabel}
           timeout={2000}
           onClick={this.handleSnackbarClick}
           onTimeout={this.handleSnackbarTimeout}

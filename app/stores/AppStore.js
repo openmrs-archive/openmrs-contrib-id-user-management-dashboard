@@ -7,14 +7,14 @@ import TempData       from './temp';
 
 class AppStore {
   constructor() {
-    let {setGridData, setFilters, setQuery, setColumns, updateUser, setCurrentPage, setSize} = Actions;
+    let {setGridData, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
       setFilters: setFilters,
       setQuery: setQuery,
       setColumns: setColumns,
-      updateUser: updateUser,
+      updateUsers: updateUsers,
       setCurrentPage: setCurrentPage,
       setSize: setSize
     });
@@ -130,14 +130,18 @@ class AppStore {
     this.setState({columns});
     this.applyFilters();
   }
-  updateUser(user) {
-    let items = this.state.allItems;
-    let old = _.find(items, (item) => {
-      return user.id === item.id;
+  updateUsers(users) {
+    let allItems = this.state.allItems;
+    _.each(users, (user) => {
+      let old = _.find(allItems, (item) => {
+        return user.id === item.id;
+      });
+      let index = allItems.indexOf(old);
+      if (index !== -1) {
+        allItems[index] = user;
+      }
     });
-    let index = items.indexOf(old);
-    if (index !== -1) items[index] = user;
-    this.setState({allItems: items});
+    this.setState({allItems});
     this.applyFilters();
   }
   setCurrentPage(currentPage, init) {

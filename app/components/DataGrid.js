@@ -52,12 +52,17 @@ class DataGrid extends React.Component {
   render () {
     let editUser;
     if (this.state.selected && this.state.selected.length) {
-      let user = this.state.source[this.state.selected[0]];
-      let allItems = AppStore.getState().allItems;
-      let userGlobal = _.find(allItems, (item) => {
-        return item.id === user.id;
+      let source = this.state.source;
+      let users = _.map(this.state.selected, (sel) => {
+        return source[sel];
       });
-      editUser = <EditUser mini user={userGlobal}/>;
+      let allItems = AppStore.getState().allItems;
+      let usersGlobal = _.map(users, (user) => {
+        return _.find(allItems, (item) => {
+          return item.id === user.id;
+        })
+      });
+      editUser = <EditUser mini users={usersGlobal}/>;
     }
     else {
       editUser = <div></div>;
