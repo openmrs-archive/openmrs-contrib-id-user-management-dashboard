@@ -21,17 +21,18 @@ class EditUser extends React.Component {
     };
     
     this.updateGroups = this.updateGroups.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
     this.setState({users: newProps.users});
   }
 
-  handleToggle = () => {
+  handleToggle() {
     this.setState({active: !this.state.active});
   };
 
-  handleUserChange = (field, value) => {
+  handleUserChange(field, value) {
     let users = this.state.users;
     let updated = false;
     _.each(users, (user) => {
@@ -45,16 +46,16 @@ class EditUser extends React.Component {
     }
   };
 
-  handleResetPass = () => {
+  handleResetPass() {
     // TO DO: add password reset logic
     this.setState({snackbar: true});
   };
 
-  handleSnackbarClick = () => {
+  handleSnackbarClick () {
     this.setState({snackbar: false});
   };
 
-  handleSnackbarTimeout = () => {
+  handleSnackbarTimeout() {
     this.setState({snackbar: false});
   };
   
