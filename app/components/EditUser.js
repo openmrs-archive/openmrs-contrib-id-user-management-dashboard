@@ -31,7 +31,7 @@ class EditUser extends React.Component {
     this.setState({active: !this.state.active});
   };
 
-  handleChange = (field, value) => {
+  handleUserChange = (field, value) => {
     let users = this.state.users;
     let updated = false;
     _.each(users, (user) => {
@@ -41,10 +41,15 @@ class EditUser extends React.Component {
       }
     });
     if (updated) {
-      this.setState({users});
-      this.setState({snackbar: true});
+      this.setState({snackbar: true, users});
     }
   };
+
+  handleResetPass = () => {
+    // TO DO: add password reset logic
+    this.setState({snackbar: true});
+  };
+
   handleSnackbarClick = () => {
     this.setState({snackbar: false});
   };
@@ -62,8 +67,8 @@ class EditUser extends React.Component {
   }
   
   submitForm = () => {
-    AppActions.updateUser(this.state.user);
-    this.setState({active: !this.state.active});
+    AppActions.updateUsers(this.state.users);
+    this.setState({active: !this.state.active, snackbar: true});
   };
 
   actions = [
@@ -106,13 +111,14 @@ class EditUser extends React.Component {
           <Switch
             checked={allInLDAP}
             label="LDAP"
-            onChange={this.handleChange.bind(this, 'inLDAP')}
+            onChange={this.handleUserChange.bind(this, 'inLDAP')}
           />
           <Switch
             checked={allInMongo}
             label="Mongo"
-            onChange={this.handleChange.bind(this, 'inMongo')}
+            onChange={this.handleUserChange.bind(this, 'inMongo')}
           />
+          <Button label='Reset Password' accent onClick={this.handleResetPass}/>
         </Dialog>
         <Snackbar
           action='Hide'
