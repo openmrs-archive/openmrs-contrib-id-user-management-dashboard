@@ -29,6 +29,8 @@ class DataGrid extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    // clear selection on each state change
+    this.handleSelect([]);
     this.setState({
       source: newProps.source,
       model: newProps.model,
@@ -111,22 +113,22 @@ class DataGrid extends React.Component {
           </Col>
           <Col md={2}>
             <Row style={{marginTop: '25px'}}>
-              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px'}}>
+              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px', color: '#000000'}}>
                 &#171;
               </Link>
               {pages.map(function(page, index) {
                 if (current == page) {
-                  return <Link key={index} style={{margin: '5px', fontWeight: 'bolder'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
+                  return <Link key={index} style={{margin: '5px', color: '#1976d2'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
                     {page}
                   </Link>
                 }
                 else {
-                  return <Link key={index} style={{margin: '5px'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
+                  return <Link key={index} style={{margin: '5px', color: '#000000'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
                     {page}
                   </Link>
                 }
               })}
-              <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px'}}>
+              <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px', color: '#000000'}}>
                 &#187;
               </Link>  
             </Row>
