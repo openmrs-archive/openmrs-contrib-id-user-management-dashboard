@@ -2,10 +2,12 @@ import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
 import {Link} from 'react-router';
 import Input from 'react-toolbox/lib/input';
+import Dropdown from 'react-toolbox/lib/dropdown';
 import React from 'react';
 import _ from 'lodash';
 
 import AppStore from '../stores/AppStore';
+import AppActions from '../actions/AppActions';
 
 import EditUser from './EditUser';
 
@@ -79,12 +81,19 @@ class DataGrid extends React.Component {
           <Col md={2}>
             {editUser}
           </Col>
-          <Col md={1} mdOffset={7}>
-            <Input type='text' value={this.state.size}/>
+          <Col md={2} mdOffset={6}>
+            <Row>
+              <Dropdown
+                auto
+                onChange={AppActions.setSize}
+                source={AppStore.getState().sizes}
+                value={AppStore.getState().size}
+              />
+            </Row>
           </Col>
           <Col md={2}>
-            <Row style={{marginTop: '20px'}}>
-              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px'}} >
+            <Row style={{marginTop: '25px'}}>
+              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px'}}>
                 &#171;
               </Link>
               {pages.map(function(page, index) {

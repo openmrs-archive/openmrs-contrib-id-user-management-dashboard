@@ -7,7 +7,7 @@ import TempData       from './temp';
 
 class AppStore {
   constructor() {
-    let {setGridData, setFilters, setQuery, setColumns, updateUser, setCurrentPage} = Actions;
+    let {setGridData, setFilters, setQuery, setColumns, updateUser, setCurrentPage, setSize} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
@@ -15,7 +15,8 @@ class AppStore {
       setQuery: setQuery,
       setColumns: setColumns,
       updateUser: updateUser,
-      setCurrentPage: setCurrentPage
+      setCurrentPage: setCurrentPage,
+      setSize: setSize
     });
 
     this.applyFilters = this.applyFilters.bind(this);
@@ -51,6 +52,20 @@ class AppStore {
       // pagination
       pagedItems: [],
       size: 10,
+      sizes: [
+        {
+          value: 10, label: '10/page'
+        },
+        {
+          value: 50, label: '50/page'
+        },
+        {
+          value: 100, label: '100/page'
+        },
+        {
+          value: 200, label: '200/page'
+        }
+      ],
       currentPage: 1,
       lastPage: 1,
       pages: [],
@@ -159,6 +174,11 @@ class AppStore {
       this.state.currentPage = currentPage;
       this.state.lastPage = lastPage;
     }
+  }
+  setSize(value) {
+    let size = value[0];
+    this.setState({size});
+    this.setCurrentPage(this.state.currentPage);
   }
 }
 
