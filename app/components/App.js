@@ -66,6 +66,7 @@ class App extends React.Component {
             </Col>
           </Row>
           <DataGrid source={this.state.pagedItems}
+                    all={this.state.filteredItems}
                     model={this.state.userModel}
                     size={this.state.size}
                     currentPage={this.state.currentPage}

@@ -64,7 +64,7 @@ class EditUser extends React.Component {
 
   render () {
     return (
-      <div>
+      <div style={{marginTop: '15px'}} >
         <Button label={'Edit User "' + this.state.user.firstName + '"'} icon={'mode_edit'} onClick={this.handleToggle} />
         <Dialog
           actions={this.actions}

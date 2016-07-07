@@ -1,7 +1,6 @@
 import Table from 'react-toolbox/lib/table';
 import {Grid, Col, Row} from 'react-flexbox-grid';
 import {Link} from 'react-router';
-import Input from 'react-toolbox/lib/input';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import React from 'react';
 import _ from 'lodash';
@@ -17,6 +16,7 @@ class DataGrid extends React.Component {
     super(props);
     
     this.state = { 
+      all: props.all,
       model: props.model,
       current: props.currentPage,
       last: props.lastPage,
@@ -35,7 +35,8 @@ class DataGrid extends React.Component {
       pages: newProps.pages,
       size: newProps.size,
       current: newProps.currentPage,
-      last: newProps.lastPage
+      last: newProps.lastPage,
+      all: newProps.all
     });
   }
 
@@ -64,7 +65,16 @@ class DataGrid extends React.Component {
     let pages = this.state.pages;
     let current = this.state.current;
     let last = this.state.last;
-    
+    let len = this.state.source.length;
+    let offset = this.state.size * (current-1);
+    let infoText;
+    if (len < 2) {
+      infoText = offset + len;
+    }
+    else {
+      infoText = (offset + 1) + '-' + (offset + len);
+    }
+    let info = <div style={{marginTop: '25px'}}>{infoText + ' of ' + this.state.all.length + ' shown'}</div>;
     return (
       <Grid>
         <Row>
@@ -77,11 +87,14 @@ class DataGrid extends React.Component {
             source={this.state.source}
           />
         </Row>
-        <Row style={{marginTop: '10px'}}>
+        <Row>
           <Col md={2}>
             {editUser}
           </Col>
-          <Col md={2} mdOffset={6}>
+          <Col md={3} mdOffset={2}>
+            {info}
+          </Col>
+          <Col md={2} mdOffset={1}>
             <Row>
               <Dropdown
                 auto
