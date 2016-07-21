@@ -1,7 +1,7 @@
 {
   "name": "openmrs-contrib-id-user-management-dashboard",
   "readmeFilename": "README.md",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "index.js",
   "keywords": [
     "react",
@@ -52,13 +52,14 @@
   },
   "dependencies": {
     "alt": "^0.18.4",
-    "flexboxgrid": "^6.3.0",
+    "collections": "^5.0.4",
     "express": "^4.13.3",
+    "flexboxgrid": "^6.3.0",
     "lodash": "^4.13.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "react-toolbox": "^1.0.0",
     "react-flexbox-grid": "^0.9.6",
-    "react-router": "^2.5.2"
+    "react-router": "^2.5.2",
+    "react-toolbox": "^1.0.0"
   }
 }
