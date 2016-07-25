@@ -7,6 +7,10 @@ let _ = require('lodash');
 let FastMap = require('collections/fast-map');
 
 module.exports = (app) => {
+  
+  /**
+   * Get users list
+   */
   app.get('/admin/api/users', (req, res) => {
     let map = new FastMap();
     async.parallel([
@@ -34,6 +38,35 @@ module.exports = (app) => {
       }
     ], () => {
       res.send(map.toArray());
+    });
+  });
+
+  /**
+   * Add selected users to LDAP (fix missing LDAP entries)
+   */
+  app.post('/admin/api/users/ldap', (req, res) => {
+    let users = req.body.users;
+    async.each(users, (user, callback) => {
+      ldap.addUser(user, () => {
+        callback();
+      })
+    }, () => {
+      res.send({status: 'OK'});
+    });
+  });
+
+  /**
+   * Add selected users to MongoDb (fix missing MongoDb entries)/ Update users (data, groups)
+   */
+  app.post('/admin/api/users/mongo', (req, res) => {
+    let users = req.body.users;
+    async.each(users, (user, callback) => {
+      let userMongo = new UserSchema(user);
+      userMongo.save(() => {
+        callback();
+      })
+    }, () => {
+      res.send({status: 'OK'});
     });
   });
 };
