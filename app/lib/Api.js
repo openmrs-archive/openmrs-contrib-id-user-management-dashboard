@@ -1,6 +1,7 @@
 'use strict';
 
 let UserSchema = require('../../../../models/user');
+let GroupSchema = require('../../../../models/group');
 let ldap = require('../../../../ldap');
 let async = require('async');
 let _ = require('lodash');
@@ -38,6 +39,22 @@ module.exports = (app) => {
       }
     ], () => {
       res.send(map.toArray());
+    });
+  });
+
+  /**
+   * Get groups list
+   */
+  app.get('/admin/api/groups', (req, res) => {
+    GroupSchema.find().exec((err, results) => {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        res.send(_.map(results, (group) => {
+          return group.groupName;
+        }));
+      }
     });
   });
 
