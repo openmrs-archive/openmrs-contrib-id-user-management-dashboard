@@ -22,10 +22,15 @@ module.exports = (app) => {
               map.get(user.primaryEmail).isInMongo = true;
             }
             else {
-              _.extend(user, {
-                isInMongo: true
+              map.set(user.primaryEmail, {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                isInMongo: true,
+                isInLDAP: false,
+                groups: user.groups,
+                primaryEmail: user.primaryEmail
               });
-              map.set(user.primaryEmail, user);
             }
             callback();
           }, () => {
