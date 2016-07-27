@@ -39,8 +39,27 @@ module.exports = (app) => {
         });
       },
       function getLDAPEntries(callback) {
-        // TO DO: implement getting list of LDAP users
-        callback();
+        ldap.getAllUsers((err, results) => {
+          async.each(results, (user, callback) => {
+            if (map.get(user.primaryEmail)) {
+              map.get(user.primaryEmail).isInLDAP = true;
+            }
+            else {
+              map.set(user.primaryEmail, {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                isInMongo: false,
+                isInLDAP: true,
+                groups: user.groups,
+                primaryEmail: user.primaryEmail
+              });
+            }
+            callback();
+          }, () => {
+            callback();
+          });
+        });
       }
     ], () => {
       res.send(map.toArray());
