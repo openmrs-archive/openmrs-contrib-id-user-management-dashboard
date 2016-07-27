@@ -3,6 +3,8 @@
 let UserSchema = require('../../../../models/user');
 let GroupSchema = require('../../../../models/group');
 let ldap = require('../../../../ldap');
+let conf = require('../../../../conf');
+
 let async = require('async');
 let _ = require('lodash');
 let FastMap = require('collections/fast-map');
@@ -109,5 +111,31 @@ module.exports = (app) => {
     }, () => {
       res.send({status: 'OK'});
     });
+  });
+
+  /**
+   * Activate selected users
+   */
+  app.post('/admin/api/activate', (req, res) => {
+    let users = req.body.users;
+    async.each(users, (user, callback) => {
+      user.locked = false;
+      // maybe merge will be required
+      user.groups = conf.ldap.user.defaultGroups;
+      let userMongo = new UserSchema(user);
+      userMongo.save(() => {
+        callback();
+      })
+    }, () => {
+      res.send({status: 'OK'});
+    });
+  });
+
+  /**
+   * Reset password for selected users
+   */
+  app.post('/admin/api/reset', (req, res) => {
+    // TODO: implement this method
+    res.send('Not implemented');
   });
 };
