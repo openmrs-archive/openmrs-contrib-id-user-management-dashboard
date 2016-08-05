@@ -22,5 +22,7 @@ module.exports = function(app) {
   app.get('/user-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, './app/index.html'));
   });
-};
 
+  // add a link to the admin page
+  app.admin.addPage('Data Management', '/user-dashboard');
+};
