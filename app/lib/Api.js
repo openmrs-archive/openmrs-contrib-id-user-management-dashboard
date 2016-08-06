@@ -9,12 +9,12 @@ let async = require('async');
 let _ = require('lodash');
 let FastMap = require('collections/fast-map');
 
-module.exports = (app) => {
+module.exports = (router) => {
   
   /**
    * Get users list
    */
-  app.get('/admin/api/users', (req, res) => {
+  router.get('/users', (req, res) => {
     let map = new FastMap();
     async.parallel([
       function getMongoEntries(callback) {
@@ -71,7 +71,7 @@ module.exports = (app) => {
   /**
    * Get groups list
    */
-  app.get('/admin/api/groups', (req, res) => {
+  router.get('/groups', (req, res) => {
     GroupSchema.find().exec((err, results) => {
       if (err) {
         res.send(err);
@@ -87,7 +87,7 @@ module.exports = (app) => {
   /**
    * Add selected users to LDAP (fix missing LDAP entries)
    */
-  app.post('/admin/api/users/ldap', (req, res) => {
+  router.post('/users/ldap', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
       ldap.addUser(user, () => {
@@ -101,7 +101,7 @@ module.exports = (app) => {
   /**
    * Add selected users to MongoDb (fix missing MongoDb entries)/ Update users (data, groups)
    */
-  app.post('/admin/api/users/mongo', (req, res) => {
+  router.post('/users/mongo', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
       let userMongo = new UserSchema(user);
@@ -116,7 +116,7 @@ module.exports = (app) => {
   /**
    * Activate selected users
    */
-  app.post('/admin/api/activate', (req, res) => {
+  router.post('/activate', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
       user.locked = false;
@@ -134,7 +134,7 @@ module.exports = (app) => {
   /**
    * Reset password for selected users
    */
-  app.post('/admin/api/reset', (req, res) => {
+  router.post('/reset', (req, res) => {
     // TODO: implement this method
     res.send('Not implemented');
   });
