@@ -8,12 +8,13 @@ import TempData       from './temp';
 
 class AppStore {
   constructor() {
-    let {setGridData, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
+    let {setGridData, setGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
 
     let that = this;
 
     this.bindListeners({
       setGridData: setGridData,
+      setGroupList: setGroupList,
       setFilters: setFilters,
       setQuery: setQuery,
       setColumns: setColumns,
@@ -41,7 +42,7 @@ class AppStore {
       },
       filters: [],
       query: '',
-      allGroups: ['admin', 'user', 'writer'],
+      allGroups: [],
       userModel: {},
       defaultModel: {
         firstName: {type: String},
@@ -73,7 +74,8 @@ class AppStore {
       pages: [],
       pageLinksOnScreen: 10
     };
-    Source.getData();
+    Source.getUsers();
+    Source.getGroups();
   }
   
   applyFilters(init) {
@@ -114,7 +116,9 @@ class AppStore {
     }
     this.setCurrentPage(1, init);
   }
-
+  setGroupList(allGroups) {
+    this.setState(allGroups);
+  }
   setGridData(allItems) {
     this.setState({allItems});
     this.applyFilters(true);

@@ -14,7 +14,7 @@ class EditUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      allGroups: AppStore.state.allGroups,
+      allGroups: AppStore.getState().allGroups,
       users: props.users,
       active: false,
       snackbar: false

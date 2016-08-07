@@ -12,7 +12,7 @@ class SearchBox extends React.Component {
   }
   render() {
     let query = AppStore.getState().query;
-    let clear = query.length ? <IconButton icon='clear' onClick={this.onClear} style={{marginTop: '25px', marginLeft: '-10px'}}/> : '';
+    let clear = query && query.length ? <IconButton icon='clear' onClick={this.onClear} style={{marginTop: '25px', marginLeft: '-10px'}}/> : '';
     return(
       <Grid>
         <Row>
