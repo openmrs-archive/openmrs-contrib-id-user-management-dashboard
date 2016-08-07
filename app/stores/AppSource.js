@@ -1,14 +1,15 @@
+'use strict';
+
 import axios from 'axios';
 
 import AppActions from '../actions/AppActions';
 
 const AppSource = {
-  getUsersList: {
-    remote(state) {
-      return axios.get(`/admin/user-dashboard/api/users`);
-    },
-    
-    success: AppActions.setGridData,
-    error: () => {},
+  getData: () => {
+    axios.get(`/admin/user-dashboard/api/users`).then((response) => {
+      AppActions.setGridData(response.data);
+    });
   }
 };
+
+export default AppSource;

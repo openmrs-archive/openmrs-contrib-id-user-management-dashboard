@@ -2,12 +2,15 @@ import _ from 'lodash';
 
 import AltInstance    from '../lib/AltInstance';
 import Actions        from '../actions/AppActions';
+import Source         from './AppSource';
 
 import TempData       from './temp';
 
 class AppStore {
   constructor() {
     let {setGridData, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
+
+    let that = this;
 
     this.bindListeners({
       setGridData: setGridData,
@@ -25,14 +28,13 @@ class AppStore {
       allItems: [],
       filteredItems: [],
       allColumns: {
-        id: 'ID',
         firstName: 'First Name',
         lastName: 'Last Name',
         inLDAP: 'LDAP',
         inMongo: 'Mongo',
         groups: 'Groups'
       },
-      columns: ['id', 'lastName', 'inLDAP'],
+      columns: ['firstName', 'lastName', 'inLDAP'],
       allFilters: {
         inLDAP: 'In LDAP',
         inMongo: 'In Mongo'
@@ -71,9 +73,7 @@ class AppStore {
       pages: [],
       pageLinksOnScreen: 10
     };
-    // temporary data
-    this.state.allItems = TempData;
-    this.applyFilters(true);
+    Source.getData();
   }
   
   applyFilters(init) {
@@ -116,7 +116,8 @@ class AppStore {
   }
 
   setGridData(allItems) {
-    return this.setState({allItems});
+    this.setState({allItems});
+    this.applyFilters(true);
   }
   setFilters(filters) {
     this.setState({filters});

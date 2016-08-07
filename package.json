@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "alt": "^0.18.4",
+    "axios": "^0.13.1",
     "collections": "^5.0.4",
     "express": "^4.13.3",
     "flexboxgrid": "^6.3.0",

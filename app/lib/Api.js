@@ -21,15 +21,15 @@ module.exports = (router) => {
         UserSchema.find().exec((err, results) => {
           async.each(results, (user, callback) => {
             if (map.get(user.primaryEmail)) {
-              map.get(user.primaryEmail).isInMongo = true;
+              map.get(user.primaryEmail).inMongo = 'Yes';
             }
             else {
               map.set(user.primaryEmail, {
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                isInMongo: true,
-                isInLDAP: false,
+                inMongo: 'Yes',
+                inLDAP: 'No',
                 groups: user.groups,
                 primaryEmail: user.primaryEmail
               });
@@ -44,15 +44,15 @@ module.exports = (router) => {
         ldap.getAllUsers((err, results) => {
           async.each(results, (user, callback) => {
             if (map.get(user.primaryEmail)) {
-              map.get(user.primaryEmail).isInLDAP = true;
+              map.get(user.primaryEmail).inLDAP = 'Yes';
             }
             else {
               map.set(user.primaryEmail, {
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                isInMongo: false,
-                isInLDAP: true,
+                inMongo: 'No',
+                inLDAP: 'Yes',
                 groups: user.groups,
                 primaryEmail: user.primaryEmail
               });
