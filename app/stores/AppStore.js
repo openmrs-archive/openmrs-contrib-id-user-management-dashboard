@@ -4,8 +4,6 @@ import AltInstance    from '../lib/AltInstance';
 import Actions        from '../actions/AppActions';
 import Source         from './AppSource';
 
-import TempData       from './temp';
-
 class AppStore {
   constructor() {
     let {setGridData, setGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
@@ -42,7 +40,7 @@ class AppStore {
       },
       filters: [],
       query: '',
-      allGroups: [],
+      allGroups: ['user', 'dashboard-administrators'],
       userModel: {},
       defaultModel: {
         firstName: {type: String},
