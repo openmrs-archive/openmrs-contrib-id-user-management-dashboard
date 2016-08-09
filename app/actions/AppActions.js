@@ -2,7 +2,7 @@ import AltInstance from '../lib/AltInstance';
 
 export default AltInstance.generateActions(
   'setGridData',
-  'setGroupList',
+  'initGroupList',
   'setQuery',
   'setFilters', 
   'setColumns',

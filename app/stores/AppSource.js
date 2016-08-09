@@ -12,8 +12,7 @@ const AppSource = {
   },
   getGroups: () => {
     return axios.get(`/admin/user-dashboard/api/groups`).then((response) => {
-      // temporary - need to fix groups API
-      // AppActions.setGroupList(response.data);
+      AppActions.initGroupList(response.data);
     });
   }
 };

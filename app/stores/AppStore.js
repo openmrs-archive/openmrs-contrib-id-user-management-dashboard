@@ -6,11 +6,11 @@ import Source         from './AppSource';
 
 class AppStore {
   constructor() {
-    let {setGridData, setGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
+    let {setGridData, initGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
-      setGroupList: setGroupList,
+      initGroupList: initGroupList,
       setFilters: setFilters,
       setQuery: setQuery,
       setColumns: setColumns,
@@ -112,8 +112,8 @@ class AppStore {
     }
     this.setCurrentPage(1, init);
   }
-  setGroupList(allGroups) {
-    this.setState(allGroups);
+  initGroupList(allGroups) {
+    this.state.allGroups = allGroups;
   }
   setGridData(allItems) {
     this.setState({allItems});
