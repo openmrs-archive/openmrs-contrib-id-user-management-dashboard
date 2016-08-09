@@ -20,6 +20,7 @@ module.exports = (router) => {
       function getMongoEntries(callback) {
         UserSchema.find().exec((err, results) => {
           async.each(results, (user, callback) => {
+            console.log('usver: ', user)
             if (map.get(user.primaryEmail)) {
               map.get(user.primaryEmail).inMongo = 'Yes';
             }
@@ -31,7 +32,9 @@ module.exports = (router) => {
                 inMongo: 'Yes',
                 inLDAP: 'No',
                 groups: user.groups,
-                primaryEmail: user.primaryEmail
+                primaryEmail: user.primaryEmail,
+                emailList: user.emailList,
+                locked: user.locked ? 'Yes' : 'No'
               });
             }
             callback();
@@ -54,7 +57,9 @@ module.exports = (router) => {
                 inMongo: 'No',
                 inLDAP: 'Yes',
                 groups: user.groups,
-                primaryEmail: user.primaryEmail
+                primaryEmail: user.primaryEmail,
+                emailList: user.emailList,
+                locked: user.locked ? 'Yes' : 'No'
               });
             }
             callback();
