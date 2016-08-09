@@ -8,8 +8,6 @@ class AppStore {
   constructor() {
     let {setGridData, setGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
 
-    let that = this;
-
     this.bindListeners({
       setGridData: setGridData,
       setGroupList: setGroupList,

@@ -17,7 +17,7 @@ class SearchBox extends React.Component {
       <Grid>
         <Row>
           <Col md={11} sm={10}>
-            <Input type='text' label={this.props.label} value={AppStore.getState().query} onChange={this.props.onChange.bind(this, 'search')} name='search' maxLength={16} />
+            <Input type='text' label={this.props.label} value={AppStore.getState().query} onChange={this.props.onChange.bind(this, 'search')} name='search'/>
           </Col>
           <Col md={1} sm={2}>
             {clear}

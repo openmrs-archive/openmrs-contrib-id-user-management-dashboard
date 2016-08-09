@@ -28,7 +28,7 @@ class EditUser extends React.Component {
     this.setState({users: newProps.users});
   }
 
-  handleToggle() {
+  handleToggle = () => {
     this.setState({active: !this.state.active});
   };
 
