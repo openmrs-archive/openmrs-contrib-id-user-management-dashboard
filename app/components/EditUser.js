@@ -3,6 +3,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
+import Input from 'react-toolbox/lib/input';
 import _ from 'lodash';
 
 import AppStore from '../stores/AppStore';
@@ -22,6 +23,7 @@ class EditUser extends React.Component {
     
     this.updateGroups = this.updateGroups.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleSnackbarTimeout = this.handleSnackbarTimeout.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -46,10 +48,18 @@ class EditUser extends React.Component {
     }
   };
 
+  handleUserPropsChange(key, value) {
+
+  }
+
   handleResetPass() {
-    // TO DO: add password reset logic
+    // TODO: add logic for password reset
     this.setState({snackbar: true});
   };
+
+  handleRemoveUser() {
+    // TODO: add logic for remove user from LDAP/Mongo
+  }
 
   handleSnackbarClick () {
     this.setState({snackbar: false});
@@ -78,16 +88,25 @@ class EditUser extends React.Component {
   ];
 
   render () {
-    let label, groups, allInMongo, allInLDAP, sucessLabel;
+    let label, groups, allInMongo, allInLDAP, sucessLabel, editUser;
     if (this.state.users.length === 1) {
-      label = `Edit User "${this.state.users[0].firstName}"`;
-      groups = this.state.users[0].groups;
+      let user = this.state.users[0];
+      label = `Edit User "${user.username}"`;
+      groups = user.groups;
       sucessLabel =  `User was successfully updated`;
+      editUser =
+        <div>
+          <Input type='text' label={'Username'} value={user.username} onChange={this.handleUserPropsChange.bind(this, 'username')} name='username'/>
+          <Input type='text' label={'Primary Email'} value={user.primaryEmail} onChange={this.handleUserPropsChange.bind(this, 'primaryEmail')} name='primaryEmail'/>
+          <Input type='text' label={'First Name'} value={user.firstName} onChange={this.handleUserPropsChange.bind(this, 'firstName')} name='firstName'/>
+          <Input type='text' label={'Last Name'} value={user.lastName} onChange={this.handleUserPropsChange.bind(this, 'lastName')} name='lastName'/>
+        </div>
     }
     else {
       label = `Edit ${this.state.users.length} users`;
       groups = [];
       sucessLabel = `${this.state.users.length} users were successfully updated`;
+      editUser = '';
     }
     allInMongo = true;
     allInLDAP = true;
@@ -109,6 +128,7 @@ class EditUser extends React.Component {
           onOverlayClick={this.handleToggle}
           title={label}>
           <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={groups} dialogLabel={'Select groups'}/>
+          {editUser}
           <Switch
             checked={allInLDAP}
             label="LDAP"
@@ -119,6 +139,7 @@ class EditUser extends React.Component {
             label="Mongo"
             onChange={this.handleUserStatusChange.bind(this, 'inMongo')}
           />
+          <Button label='Remove User' accent onClick={this.handleRemoveUser}/>
           <Button label='Reset Password' accent onClick={this.handleResetPass}/>
         </Dialog>
         <Snackbar
