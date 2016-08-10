@@ -29,9 +29,12 @@ class AppStore {
         lastName: 'Last Name',
         inLDAP: 'LDAP',
         inMongo: 'Mongo',
-        groups: 'Groups'
+        groups: 'Groups',
+        username: 'Username',
+        primaryEmail: 'Primary Email',
+        locked: 'Locked'
       },
-      columns: ['firstName', 'lastName', 'inLDAP'],
+      columns: ['username', 'primaryEmail', 'firstName', 'lastName', 'inLDAP', 'inMongo'],
       allFilters: {
         inLDAP: 'In LDAP',
         inMongo: 'In Mongo'
@@ -41,12 +44,15 @@ class AppStore {
       allGroups: ['user', 'dashboard-administrators'],
       userModel: {},
       defaultModel: {
+        username: {type: String},
         firstName: {type: String},
         lastName: {type: String},
-        id: {type: String},
         inMongo: {type: String},
         inLDAP: {type: String},
-        groups: {type: [String]}
+        groups: {type: [String]},
+        primaryEmail: {type: String},
+        emailList: {type: [String]},
+        locked: {type: String}
       },
       // pagination
       pagedItems: [],

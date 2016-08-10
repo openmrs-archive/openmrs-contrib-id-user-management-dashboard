@@ -20,7 +20,6 @@ module.exports = (router) => {
       function getMongoEntries(callback) {
         UserSchema.find().exec((err, results) => {
           async.each(results, (user, callback) => {
-            console.log('usver: ', user)
             if (map.get(user.primaryEmail)) {
               map.get(user.primaryEmail).inMongo = 'Yes';
             }
@@ -45,6 +44,8 @@ module.exports = (router) => {
       },
       function getLDAPEntries(callback) {
         ldap.getAllUsers((err, results) => {
+          // temporary - need to make PR into ID Dashboard
+          results = _.reject(results, (user) => { return !user.primaryEmail });
           async.each(results, (user, callback) => {
             if (map.get(user.primaryEmail)) {
               map.get(user.primaryEmail).inLDAP = 'Yes';

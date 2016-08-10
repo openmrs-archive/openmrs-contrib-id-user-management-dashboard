@@ -32,7 +32,7 @@ class EditUser extends React.Component {
     this.setState({active: !this.state.active});
   };
 
-  handleUserChange(field, value) {
+  handleUserStatusChange(field, value) {
     let users = this.state.users;
     let updated = false;
     _.each(users, (user) => {
@@ -112,12 +112,12 @@ class EditUser extends React.Component {
           <Switch
             checked={allInLDAP}
             label="LDAP"
-            onChange={this.handleUserChange.bind(this, 'inLDAP')}
+            onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}
           />
           <Switch
             checked={allInMongo}
             label="Mongo"
-            onChange={this.handleUserChange.bind(this, 'inMongo')}
+            onChange={this.handleUserStatusChange.bind(this, 'inMongo')}
           />
           <Button label='Reset Password' accent onClick={this.handleResetPass}/>
         </Dialog>
