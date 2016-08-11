@@ -138,6 +138,7 @@ class AppStore {
     this.applyFilters();
   }
   updateUsers(users) {
+    Source.updateUsers(users);
     let allItems = this.state.allItems;
     _.each(users, (user) => {
       let old = _.find(allItems, (item) => {

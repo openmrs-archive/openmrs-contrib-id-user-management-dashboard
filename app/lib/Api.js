@@ -25,6 +25,7 @@ module.exports = (router) => {
             }
             else {
               map.set(user.primaryEmail, {
+                _id: user._id,
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -52,6 +53,7 @@ module.exports = (router) => {
             }
             else {
               map.set(user.primaryEmail, {
+                _id: user._id,
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -87,6 +89,23 @@ module.exports = (router) => {
           return group.groupName;
         }));
       }
+    });
+  });
+
+  /**
+   * Update selected users
+   */
+  router.post('/users', (req, res) => {
+    let users = req.body.users;
+    async.each(users, (user, callback) => {
+      UserSchema.update({
+        _id: user._id
+      }, user, (err) => {
+        console.log(err);
+        callback();
+      });
+    }, () => {
+      res.send({status: 'OK'});
     });
   });
 

@@ -49,7 +49,9 @@ class EditUser extends React.Component {
   };
 
   handleUserPropsChange(key, value) {
-
+    let users = this.state.users;
+    users[0][key] = value;
+    this.setState({users});
   }
 
   handleResetPass() {
