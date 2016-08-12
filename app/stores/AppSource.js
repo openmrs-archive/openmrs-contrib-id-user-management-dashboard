@@ -23,6 +23,13 @@ const AppSource = {
         callback();
       }
     });
+  },
+  deleteUsers: (users, callback) => {
+    return axios.delete(`${API_ROOT}/users`, {data: {users}}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
   }
 };
 

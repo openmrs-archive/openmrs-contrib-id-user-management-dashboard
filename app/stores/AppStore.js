@@ -6,7 +6,17 @@ import Source         from './AppSource';
 
 class AppStore {
   constructor() {
-    let {setGridData, initGroupList, setFilters, setQuery, setColumns, updateUsers, setCurrentPage, setSize} = Actions;
+    let {
+      setGridData,
+      initGroupList,
+      setFilters,
+      setQuery,
+      setColumns,
+      updateUsers,
+      deleteUsers,
+      setCurrentPage,
+      setSize
+    } = Actions;
 
     this.bindListeners({
       setGridData: setGridData,
@@ -15,6 +25,7 @@ class AppStore {
       setQuery: setQuery,
       setColumns: setColumns,
       updateUsers: updateUsers,
+      deleteUsers: deleteUsers,
       setCurrentPage: setCurrentPage,
       setSize: setSize
     });
@@ -152,11 +163,15 @@ class AppStore {
       });
       that.setState({allItems});
       that.applyFilters();
-      if (callback) {
-        callback();
-      }
     });
-
+  }
+  deleteUsers(users, callback) {
+    let that = this;
+    Source.deleteUsers(users, () => {
+      let allItems = _.difference(this.state.allItems, users);
+      that.setState({allItems});
+      that.applyFilters();
+    });
   }
   setCurrentPage(currentPage, init) {
     let count = Math.ceil(this.state.filteredItems.length / this.state.size);

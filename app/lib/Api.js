@@ -115,10 +115,10 @@ module.exports = (router) => {
   router.delete('/users', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      if (users.inMongo) {
+      if (user.inMongo) {
         UserSchema.remove({
           _id: user._id
-        }, user, (err) => {
+        }, (err) => {
           // TODO: add error handler
           callback();
         });

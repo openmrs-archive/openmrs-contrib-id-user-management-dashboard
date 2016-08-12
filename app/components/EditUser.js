@@ -23,6 +23,7 @@ class EditUser extends React.Component {
     
     this.updateGroups = this.updateGroups.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleRemoveUser = this.handleRemoveUser.bind(this);
     this.handleSnackbarTimeout = this.handleSnackbarTimeout.bind(this);
   }
 
@@ -60,7 +61,7 @@ class EditUser extends React.Component {
   };
 
   handleRemoveUser() {
-    // TODO: add logic for remove user from LDAP/Mongo
+    AppActions.deleteUsers(this.state.users);
   }
 
   handleSnackbarClick () {
@@ -82,7 +83,7 @@ class EditUser extends React.Component {
   submitForm = () => {
     AppActions.updateUsers(this.state.users);
     // TODO: make it async
-    that.setState({active: !this.state.active, snackbar: true});
+    this.setState({active: !this.state.active, snackbar: true});
   };
 
   actions = [

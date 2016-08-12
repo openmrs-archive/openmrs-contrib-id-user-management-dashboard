@@ -7,6 +7,7 @@ export default AltInstance.generateActions(
   'setFilters', 
   'setColumns',
   'updateUsers',
+  'deleteUsers',
   'setCurrentPage',
   'setSize'
 );
