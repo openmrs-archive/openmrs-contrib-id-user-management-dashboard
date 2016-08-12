@@ -137,20 +137,26 @@ class AppStore {
     this.setState({columns});
     this.applyFilters();
   }
-  updateUsers(users) {
-    Source.updateUsers(users);
-    let allItems = this.state.allItems;
-    _.each(users, (user) => {
-      let old = _.find(allItems, (item) => {
-        return user.id === item.id;
+  updateUsers(users, callback) {
+    let that = this;
+    Source.updateUsers(users, () => {
+      let allItems = this.state.allItems;
+      _.each(users, (user) => {
+        let old = _.find(allItems, (item) => {
+          return user.id === item.id;
+        });
+        let index = allItems.indexOf(old);
+        if (index !== -1) {
+          allItems[index] = user;
+        }
       });
-      let index = allItems.indexOf(old);
-      if (index !== -1) {
-        allItems[index] = user;
+      that.setState({allItems});
+      that.applyFilters();
+      if (callback) {
+        callback();
       }
     });
-    this.setState({allItems});
-    this.applyFilters();
+
   }
   setCurrentPage(currentPage, init) {
     let count = Math.ceil(this.state.filteredItems.length / this.state.size);

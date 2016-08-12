@@ -61,7 +61,7 @@ class DataGrid extends React.Component {
       let allItems = AppStore.getState().allItems;
       let usersGlobal = _.map(users, (user) => {
         return _.find(allItems, (item) => {
-          return item.id === user.id;
+          return item.primaryEmail === user.primaryEmail;
         })
       });
       editUser = <EditUser mini users={usersGlobal}/>;

@@ -81,7 +81,8 @@ class EditUser extends React.Component {
   
   submitForm = () => {
     AppActions.updateUsers(this.state.users);
-    this.setState({active: !this.state.active, snackbar: true});
+    // TODO: make it async
+    that.setState({active: !this.state.active, snackbar: true});
   };
 
   actions = [

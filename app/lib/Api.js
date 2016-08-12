@@ -101,9 +101,34 @@ module.exports = (router) => {
       UserSchema.update({
         _id: user._id
       }, user, (err) => {
-        console.log(err);
+        // TODO: add error handler
         callback();
       });
+    }, () => {
+      res.send({status: 'OK'});
+    });
+  });
+
+  /**
+   * Delete selected users
+   */
+  router.delete('/users', (req, res) => {
+    let users = req.body.users;
+    async.each(users, (user, callback) => {
+      if (users.inMongo) {
+        UserSchema.remove({
+          _id: user._id
+        }, user, (err) => {
+          // TODO: add error handler
+          callback();
+        });
+      }
+      else {
+        ldap.deleteUser(user.username, (err) => {
+          // TODO: add error handler
+          callback();
+        })
+      }
     }, () => {
       res.send({status: 'OK'});
     });
