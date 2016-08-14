@@ -30,6 +30,20 @@ const AppSource = {
         callback();
       }
     });
+  }           ,
+  registerLDAP: (users, callback) => {
+    return axios.post(`${API_ROOT}/users/ldap`, {data: {users}}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  },
+  registerMongo: (users, callback) => {
+    return axios.post(`${API_ROOT}/users/mongo`, {data: {users}}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
   }
 };
 
