@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const config = require('./webpack.config');
+const mid = require('../../express-middleware');
 
 const compiler = webpack(config);
 
@@ -23,7 +24,7 @@ module.exports = function(app) {
 
   app.use(require('webpack-hot-middleware')(compiler));
 
-  app.get('/user-dashboard', (req, res) => {
+  app.get('/user-dashboard', mid.restrictTo('dashboard-administrators'), (req, res) => {
     res.sendFile(path.join(__dirname, './app/index.html'));
   });
   
