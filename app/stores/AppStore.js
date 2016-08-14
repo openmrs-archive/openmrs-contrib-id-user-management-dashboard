@@ -40,7 +40,6 @@ class AppStore {
         lastName: 'Last Name',
         inLDAP: 'LDAP',
         inMongo: 'Mongo',
-        groups: 'Groups',
         username: 'Username',
         primaryEmail: 'Primary Email',
         locked: 'Locked'
@@ -90,7 +89,7 @@ class AppStore {
     Source.getUsers();
     Source.getGroups();
   }
-  
+
   applyFilters(init) {
     let that = this;
     // temporary (demo only)
