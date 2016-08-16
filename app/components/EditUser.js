@@ -29,6 +29,7 @@ class EditUser extends React.Component {
     this.handleSnackbarTimeout = this.handleSnackbarTimeout.bind(this);
     this.addEmptyEmail = this.addEmptyEmail.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
+    this.removeEmail = this.removeEmail.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -49,7 +50,10 @@ class EditUser extends React.Component {
       }
     });
     if (updated) {
-      AppActions.updateUsers(users, true);
+      AppActions.updateUsers({
+        users: users,
+        resave: true
+      });
       this.setState({snackbar: true, users});
     }
   };
@@ -98,6 +102,12 @@ class EditUser extends React.Component {
     this.setState({users});
   }
 
+  removeEmail(index) {
+    let users = this.state.users;
+    users[0].emailList.splice(index, 1);
+    this.setState({users});
+  }
+
   changeEmail(index, value) {
     let users = this.state.users;
     if (index == 0) {
@@ -108,7 +118,9 @@ class EditUser extends React.Component {
   }
 
   submitForm = () => {
-    AppActions.updateUsers(this.state.users);
+    AppActions.updateUsers({
+      users: this.state.users
+    });
     // TODO: make it async
     this.setState({active: !this.state.active, snackbar: true});
   };
@@ -143,7 +155,7 @@ class EditUser extends React.Component {
                 <Input type='email' label={'Email'} value={user.emailList[index]} onChange={this.changeEmail.bind(this, index)} name={index}/>
               </Col>
               <Col md={1} sm={2}>
-                <IconButton icon='clear' style={{marginTop: '25px', marginLeft: '-10px'}}/>
+                <IconButton icon='clear' style={{marginTop: '25px', marginLeft: '-10px'}} onClick={() => {this.removeEmail(index)}}/>
               </Col>
             </Row>
           )

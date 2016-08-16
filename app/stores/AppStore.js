@@ -148,13 +148,15 @@ class AppStore {
     this.setState({columns});
     this.applyFilters();
   }
-  updateUsers(users, resave, callback) {
+  updateUsers(options) {
     let that = this;
+    let users = options.users;
+    let resave = options.resave;
     let updateEach = () => {
       let allItems = that.state.allItems;
       _.each(users, (user) => {
         let old = _.find(allItems, (item) => {
-          return user.id === item.id;
+          return user._id === item._id;
         });
         let index = allItems.indexOf(old);
         if (index !== -1) {
@@ -171,7 +173,7 @@ class AppStore {
       Source.updateUsers(users, updateEach);
     }
   }
-  deleteUsers(users, callback) {
+  deleteUsers(users) {
     let that = this;
     Source.deleteUsers(users, () => {
       let allItems = _.difference(this.state.allItems, users);

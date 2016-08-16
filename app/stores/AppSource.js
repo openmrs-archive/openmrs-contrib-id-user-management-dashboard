@@ -32,7 +32,7 @@ const AppSource = {
     });
   }           ,
   resaveUsers: (users, callback) => {
-    return axios.post(`${API_ROOT}/users/ersave`, {data: {users}}).then(() => {
+    return axios.post(`${API_ROOT}/users/resave`, {data: {users}}).then(() => {
       if (callback) {
         callback();
       }
