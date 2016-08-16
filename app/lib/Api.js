@@ -10,7 +10,7 @@ let _ = require('lodash');
 let FastMap = require('collections/fast-map');
 
 module.exports = (router) => {
-  
+
   /**
    * Get users list
    */
@@ -135,29 +135,25 @@ module.exports = (router) => {
   });
 
   /**
-   * Add selected users to LDAP (fix missing LDAP entries)
+   * Add selected users to MongoDb/LDAP (fix missing MongoDb/LDAP entries)
    */
-  router.post('/users/ldap', (req, res) => {
+  router.post('/users/resave', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      ldap.addUser(user, () => {
-        callback();
-      })
-    }, () => {
-      res.send({status: 'OK'});
-    });
-  });
-
-  /**
-   * Add selected users to MongoDb (fix missing MongoDb entries)/ Update users (data, groups)
-   */
-  router.post('/users/mongo', (req, res) => {
-    let users = req.body.users;
-    async.each(users, (user, callback) => {
-      let userMongo = new UserSchema(user);
-      userMongo.save(() => {
-        callback();
-      })
+      if (user.inMongo && user._id) {
+        UserSchema.update({
+          _id: user._id
+        }, user, (err) => {
+          // TODO: add error handler
+          callback();
+        });
+      }
+      else {
+        let userMongo = new UserSchema(user);
+        userMongo.save(() => {
+          callback();
+        })
+      }
     }, () => {
       res.send({status: 'OK'});
     });

@@ -31,20 +31,13 @@ const AppSource = {
       }
     });
   }           ,
-  registerLDAP: (users, callback) => {
-    return axios.post(`${API_ROOT}/users/ldap`, {data: {users}}).then(() => {
+  resaveUsers: (users, callback) => {
+    return axios.post(`${API_ROOT}/users/ersave`, {data: {users}}).then(() => {
       if (callback) {
         callback();
       }
     });
   },
-  registerMongo: (users, callback) => {
-    return axios.post(`${API_ROOT}/users/mongo`, {data: {users}}).then(() => {
-      if (callback) {
-        callback();
-      }
-    });
-  }
 };
 
 export default AppSource;
