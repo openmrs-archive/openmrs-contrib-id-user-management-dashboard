@@ -20,7 +20,7 @@ class EditUser extends React.Component {
       active: false,
       snackbar: false
     };
-    
+
     this.updateGroups = this.updateGroups.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleRemoveUser = this.handleRemoveUser.bind(this);
@@ -45,6 +45,7 @@ class EditUser extends React.Component {
       }
     });
     if (updated) {
+      AppActions.updateUsers(users, true);
       this.setState({snackbar: true, users});
     }
   };
@@ -71,7 +72,7 @@ class EditUser extends React.Component {
   handleSnackbarTimeout() {
     this.setState({snackbar: false});
   };
-  
+
   updateGroups(value) {
     let users = this.state.users;
     _.each(users, (user) => {
@@ -79,7 +80,7 @@ class EditUser extends React.Component {
     });
     this.setState({users});
   }
-  
+
   submitForm = () => {
     AppActions.updateUsers(this.state.users);
     // TODO: make it async
