@@ -95,7 +95,8 @@ class AppStore {
     // temporary (demo only)
     let filteredFirstItems = _.filter(this.state.allItems, (item) => {
       var query = item.firstName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1
-          || item.lastName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1;
+          || item.lastName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1
+          || item.primaryEmail.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1;
       if (query) {
         var state = true;
         _.each(that.state.filters, (el) => {
