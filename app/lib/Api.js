@@ -22,6 +22,8 @@ module.exports = (router) => {
           async.each(results, (user, callback) => {
             if (map.get(user.primaryEmail)) {
               map.get(user.primaryEmail).inMongo = 'Yes';
+              map.get(user.primaryEmail).groups = user.groups;
+              map.get(user.primaryEmail).emailList = user.emailList;
             }
             else {
               map.set(user.primaryEmail, {

@@ -1,6 +1,8 @@
 import React from 'react';
 import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
+import {IconButton} from 'react-toolbox/lib/button';
+import {Col, Row} from 'react-flexbox-grid';
 import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
 import Input from 'react-toolbox/lib/input';
@@ -99,12 +101,47 @@ class EditUser extends React.Component {
       label = `Edit User "${user.username}"`;
       groups = user.groups;
       sucessLabel =  `User was successfully updated`;
+      let emails = [];
+      for (var index in user.emailList) {
+        if (user.emailList[index] === user.primaryEmail) {
+          emails.push(
+            <Row key={'email' + index}>
+              <Col md={12}>
+                <Input type='text' value={user.emailList[index]} />
+              </Col>
+            </Row>
+          )
+        }
+        else {
+          emails.push(
+            <Row key={'email' + index}>
+              <Col md={11} sm={10}>
+                <Input type='text' value={user.emailList[index]} />
+              </Col>
+              <Col md={1} sm={2}>
+                <IconButton icon='clear' style={{marginTop: '25px', marginLeft: '-10px'}}/>
+              </Col>
+            </Row>
+          )
+        }
+      }
+      let emailBlock =
+        <div style={{marginTop: '20px', marginBottom: '20px'}}>
+          Email List:
+          {emails.map((item, index) => {
+            return <div key={index}>
+              {item}
+            </div>
+          })}
+          <Button label={'Add email'} icon={'email'}/>
+        </div>;
       editUser =
         <div>
           <Input type='text' label={'Username'} value={user.username} onChange={this.handleUserPropsChange.bind(this, 'username')} name='username'/>
           <Input type='text' label={'Primary Email'} value={user.primaryEmail} onChange={this.handleUserPropsChange.bind(this, 'primaryEmail')} name='primaryEmail'/>
           <Input type='text' label={'First Name'} value={user.firstName} onChange={this.handleUserPropsChange.bind(this, 'firstName')} name='firstName'/>
           <Input type='text' label={'Last Name'} value={user.lastName} onChange={this.handleUserPropsChange.bind(this, 'lastName')} name='lastName'/>
+          {emailBlock}
         </div>
     }
     else {
