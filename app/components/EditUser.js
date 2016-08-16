@@ -27,6 +27,8 @@ class EditUser extends React.Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.handleRemoveUser = this.handleRemoveUser.bind(this);
     this.handleSnackbarTimeout = this.handleSnackbarTimeout.bind(this);
+    this.addEmptyEmail = this.addEmptyEmail.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -54,6 +56,13 @@ class EditUser extends React.Component {
 
   handleUserPropsChange(key, value) {
     let users = this.state.users;
+    if (key === 'primaryEmail') {
+      let prev = users[0].primaryEmail;
+      let index = users[0].emailList.indexOf(prev);
+      if (index !== -1) {
+        users[0].emailList[index] = value;
+      }
+    }
     users[0][key] = value;
     this.setState({users});
   }
@@ -83,6 +92,21 @@ class EditUser extends React.Component {
     this.setState({users});
   }
 
+  addEmptyEmail() {
+    let users = this.state.users;
+    users[0].emailList.push('');
+    this.setState({users});
+  }
+
+  changeEmail(index, value) {
+    let users = this.state.users;
+    if (index == 0) {
+      users[0].primaryEmail = value;
+    }
+    users[0].emailList[index] = value;
+    this.setState({users});
+  }
+
   submitForm = () => {
     AppActions.updateUsers(this.state.users);
     // TODO: make it async
@@ -96,18 +120,18 @@ class EditUser extends React.Component {
 
   render () {
     let label, groups, allInMongo, allInLDAP, sucessLabel, editUser;
+    let emails = [];
     if (this.state.users.length === 1) {
       let user = this.state.users[0];
       label = `Edit User "${user.username}"`;
       groups = user.groups;
       sucessLabel =  `User was successfully updated`;
-      let emails = [];
       for (var index in user.emailList) {
         if (user.emailList[index] === user.primaryEmail) {
           emails.push(
             <Row key={'email' + index}>
               <Col md={12}>
-                <Input type='text' value={user.emailList[index]} />
+                <Input type='email'  label={'Primary Email'} value={user.emailList[index]} onChange={this.changeEmail.bind(this, index)} name={index} required/>
               </Col>
             </Row>
           )
@@ -116,7 +140,7 @@ class EditUser extends React.Component {
           emails.push(
             <Row key={'email' + index}>
               <Col md={11} sm={10}>
-                <Input type='text' value={user.emailList[index]} />
+                <Input type='email' label={'Email'} value={user.emailList[index]} onChange={this.changeEmail.bind(this, index)} name={index}/>
               </Col>
               <Col md={1} sm={2}>
                 <IconButton icon='clear' style={{marginTop: '25px', marginLeft: '-10px'}}/>
@@ -133,7 +157,7 @@ class EditUser extends React.Component {
               {item}
             </div>
           })}
-          <Button label={'Add email'} icon={'email'}/>
+          <Button label={'Add email'} icon={'email'} onClick={this.addEmptyEmail}/>
         </div>;
       editUser =
         <div>
