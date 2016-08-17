@@ -35,6 +35,12 @@ class AppStore {
     this.state = {
       allItems: [],
       filteredItems: [],
+      columnToFilter: [
+        'username',
+        'firstName',
+        'lastName',
+        'primaryEmail'
+      ],
       allColumns: {
         firstName: 'First Name',
         lastName: 'Last Name',
@@ -92,11 +98,29 @@ class AppStore {
 
   applyFilters(init) {
     let that = this;
-    // temporary (demo only)
+    let regExpCheck = (item) => {
+      let regExp = new RegExp(this.state.query);
+      let eq = false;
+      _.each(this.state.columnToFilter, (column) => {
+         if (regExp.test(item[column])) {
+           eq = true;
+         }
+      });
+      return eq;
+    };
+
+    let strictCheck = (item) => {
+      let queryString = this.state.query.toLowerCase();
+      let eq = false;
+      _.each(this.state.columnToFilter, (column) => {
+        if (item[column] && item[column].toLowerCase().indexOf(queryString) !== -1) {
+          eq = true;
+        }
+      });
+      return eq;
+    };
     let filteredFirstItems = _.filter(this.state.allItems, (item) => {
-      var query = item.firstName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1
-          || item.lastName.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1
-          || item.primaryEmail.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1;
+      let query = strictCheck(item) || regExpCheck(item);
       if (query) {
         var state = true;
         _.each(that.state.filters, (el) => {
