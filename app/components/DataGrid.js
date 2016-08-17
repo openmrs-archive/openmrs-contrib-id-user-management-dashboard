@@ -11,11 +11,11 @@ import AppActions from '../actions/AppActions';
 import EditUser from './EditUser';
 
 class DataGrid extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    
-    this.state = { 
+
+    this.state = {
       all: props.all,
       model: props.model,
       current: props.currentPage,
@@ -130,7 +130,7 @@ class DataGrid extends React.Component {
               })}
               <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px', color: '#000000'}}>
                 &#187;
-              </Link>  
+              </Link>
             </Row>
           </Col>
         </Row>

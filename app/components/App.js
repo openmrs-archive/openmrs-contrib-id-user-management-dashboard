@@ -13,14 +13,22 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = AppStore.getState();
+    if (props.location.query.user) {
+      AppActions.setQuery(props.location.query.user);
+    }
     //AppActions.setCurrentPage(props.location.query.page, true);
     this.onStoreChange = this.onStoreChange.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
     let query = newProps.location.query;
-    if (query && query.page) {
-      AppActions.setCurrentPage(parseInt(query.page));
+    if (query) {
+      if (query.user) {
+        AppActions.setQuery(query.user);
+      }
+      if (query.page) {
+        AppActions.setCurrentPage(parseInt(query.page));
+      }
     }
   }
 
@@ -40,7 +48,7 @@ class App extends React.Component {
   onSearchBoxChange(key, value) {
     return AppActions.setQuery(value);
   }
-  
+
   render() {
     return (
       <div>
