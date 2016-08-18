@@ -178,9 +178,9 @@ class AppStore {
     let that = this;
     let users = options.users;
     let resave = options.resave;
-    let updateEach = () => {
+    let updateEach = (updatedUsers) => {
       let allItems = that.state.allItems;
-      _.each(users, (user) => {
+      _.each(updatedUsers, (user) => {
         let old = _.find(allItems, (item) => {
           return user._id === item._id;
         });

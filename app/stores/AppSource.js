@@ -34,9 +34,9 @@ const AppSource = {
   },
   updateUsers: (users, callback) => {
     return axios.post(`${API_ROOT}/users`, {users}).then((response) => {
-      handleResponse(response, () => {
+      handleResponse(response, (data) => {
         if (callback) {
-          callback();
+          callback(data);
         }
       });
     });
@@ -54,7 +54,7 @@ const AppSource = {
     return axios.post(`${API_ROOT}/users/resave`, {users}).then((response) => {
       handleResponse(response, (data) => {
         if (callback) {
-          callback();
+          callback(data);
         }
       });
     });
