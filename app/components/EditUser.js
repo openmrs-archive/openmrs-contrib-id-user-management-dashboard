@@ -131,10 +131,10 @@ class EditUser extends React.Component {
   ];
 
   render () {
-    let label, groups, allInMongo, allInLDAP, sucessLabel, editUser;
-    let emails = [];
+    let label, groups, allInMongo, allInLDAP, allLocked, sucessLabel, editUser;
+    let user, emails = [];
     if (this.state.users.length === 1) {
-      let user = this.state.users[0];
+      user = this.state.users[0];
       label = `Edit User "${user.username}"`;
       groups = user.groups;
       sucessLabel =  `User was successfully updated`;
@@ -143,7 +143,12 @@ class EditUser extends React.Component {
           emails.push(
             <Row key={'email' + index}>
               <Col md={12}>
-                <Input type='email'  label={'Primary Email'} value={user.emailList[index]} onChange={this.changeEmail.bind(this, index)} name={index} required/>
+                <Input type='email'
+                       label={'Primary Email'}
+                       value={user.emailList[index]}
+                       onChange={this.changeEmail.bind(this, index)}
+                       name={index}
+                       disabled={user.locked}/>
               </Col>
             </Row>
           )
@@ -152,31 +157,62 @@ class EditUser extends React.Component {
           emails.push(
             <Row key={'email' + index}>
               <Col md={11} sm={10}>
-                <Input type='email' label={'Email'} value={user.emailList[index]} onChange={this.changeEmail.bind(this, index)} name={index}/>
+                <Input type='email'
+                       label={'Email'}
+                       value={user.emailList[index]}
+                       onChange={this.changeEmail.bind(this, index)}
+                       name={index}
+                       disabled={user.locked}/>
               </Col>
               <Col md={1} sm={2}>
-                <IconButton icon='clear' style={{marginTop: '25px', marginLeft: '-10px'}} onClick={() => {this.removeEmail(index)}}/>
+                <IconButton icon='clear'
+                            style={{marginTop: '25px', marginLeft: '-10px'}}
+                            onClick={() => {this.removeEmail(index)}}
+                            disabled={user.locled}/>
               </Col>
             </Row>
           )
         }
       }
       let emailBlock =
-        <div style={{marginTop: '20px', marginBottom: '20px'}}>
+        user.inMongo ? <div style={{marginTop: '20px', marginBottom: '20px'}}>
           Email List:
           {emails.map((item, index) => {
             return <div key={index}>
               {item}
             </div>
           })}
-          <Button label={'Add email'} icon={'email'} onClick={this.addEmptyEmail}/>
-        </div>;
+          <Button label={'Add email'}
+                  icon={'email'}
+                  onClick={this.addEmptyEmail}
+                  disabled={user.locked}/>
+        </div> : '';
       editUser =
         <div>
-          <Input type='text' label={'Username'} value={user.username} onChange={this.handleUserPropsChange.bind(this, 'username')} name='username' disabled={true}/>
-          <Input type='text' label={'Primary Email'} value={user.primaryEmail} onChange={this.handleUserPropsChange.bind(this, 'primaryEmail')} name='primaryEmail'/>
-          <Input type='text' label={'First Name'} value={user.firstName} onChange={this.handleUserPropsChange.bind(this, 'firstName')} name='firstName'/>
-          <Input type='text' label={'Last Name'} value={user.lastName} onChange={this.handleUserPropsChange.bind(this, 'lastName')} name='lastName'/>
+          <Input type='text'
+                 label={'Username'}
+                 value={user.username}
+                 onChange={this.handleUserPropsChange.bind(this, 'username')}
+                 name='username'
+                 disabled={true}/>
+          <Input type='text'
+                 label={'Primary Email'}
+                 value={user.primaryEmail}
+                 onChange={this.handleUserPropsChange.bind(this, 'primaryEmail')}
+                 name='primaryEmail'
+                 disabled={user.locked}/>
+          <Input type='text'
+                 label={'First Name'}
+                 value={user.firstName}
+                 onChange={this.handleUserPropsChange.bind(this, 'firstName')}
+                 name='firstName'
+                 disabled={user.locked}/>
+          <Input type='text'
+                 label={'Last Name'}
+                 value={user.lastName}
+                 onChange={this.handleUserPropsChange.bind(this, 'lastName')}
+                 name='lastName'
+                 disabled={user.locked}/>
           {emailBlock}
         </div>
     }
@@ -188,12 +224,16 @@ class EditUser extends React.Component {
     }
     allInMongo = true;
     allInLDAP = true;
+    allLocked = true;
     _.each(this.state.users, (user) => {
       if (allInLDAP) {
         allInLDAP = user.inLDAP;
       }
       if (allInMongo) {
         allInMongo = user.inMongo;
+      }
+      if (allLocked) {
+        allLocked = user.locked;
       }
     });
     return (
@@ -205,17 +245,22 @@ class EditUser extends React.Component {
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
           title={label}>
-          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={groups} dialogLabel={'Select groups'}/>
+          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={groups} dialogLabel={'Select groups'} disabled={!user.inMongo}/>
           {editUser}
           <Switch
             checked={allInLDAP}
-            label="LDAP"
+            label={'LDAP'}
             onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}
           />
           <Switch
             checked={allInMongo}
-            label="Mongo"
+            label={'Mongo'}
             onChange={this.handleUserStatusChange.bind(this, 'inMongo')}
+          />
+          <Switch
+            checked={allLocked}
+            label={'Locked'}
+            onChange={this.handleUserPropsChange.bind(this, 'locked')}
           />
           <Button label='Remove User' accent onClick={this.handleRemoveUser}/>
           <Button label='Reset Password' accent onClick={this.handleResetPass}/>

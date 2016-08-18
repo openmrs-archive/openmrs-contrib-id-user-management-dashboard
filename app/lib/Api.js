@@ -16,6 +16,8 @@ let mapFromDb = (user, fromMongo) => {
     lastName: user.lastName,
     displayName: user.displayName,
     primaryEmail: user.primaryEmail,
+    groups: [],
+    emailList: []
   };
   if (fromMongo) {
     obj = _.extend(obj, {
@@ -62,6 +64,7 @@ module.exports = (router) => {
                 map.get(user.primaryEmail).groups = user.groups;
                 map.get(user.primaryEmail).emailList = user.emailList;
                 map.get(user.primaryEmail).locked = user.locked;
+                map.get(user.primaryEmail).uid = user._id;
               }
               else {
                 let mappedUser = mapFromDb(user, true);
@@ -145,19 +148,27 @@ module.exports = (router) => {
   router.post('/users', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      UserSchema.findOne({
-        _id: user.uid
-      }, (err, userMongo) => {
-        if (err) {
-          callback(err);
-        }
-        else {
-          userMongo = _.extend(userMongo, mapToDb(user));
-          userMongo.save((err) => {
+      if (user.inMongo && user.uid) {
+        UserSchema.findOne({
+          _id: user.uid
+        }, (err, userMongo) => {
+          if (err) {
             callback(err);
-          });
-        }
-      });
+          }
+          else {
+            userMongo = _.extend(userMongo, mapToDb(user));
+            console.log('user to update: ', userMongo);
+            userMongo.save((err) => {
+              callback(err);
+            });
+          }
+        });
+      }
+      else {
+        ldap.updateUser(user.username, (err) => {
+          callback(err);
+        });
+      }
     }, (err) => {
       if (err) {
         res.send({
@@ -177,7 +188,7 @@ module.exports = (router) => {
   router.delete('/users', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      if (user.inMongo) {
+      if (user.inMongo && user.uid) {
         UserSchema.remove({
           _id: user.uid
         }, (err) => {
@@ -235,39 +246,6 @@ module.exports = (router) => {
           status: 'ERR',
           error: err
         })
-      }
-      else {
-        res.send({status: 'OK'});
-      }
-    });
-  });
-
-  /**
-   * Activate selected users
-   */
-  router.post('/activate', (req, res) => {
-    let users = req.body.users;
-    async.each(users, (user, callback) => {
-      user.groups = _.concat(user.groups, conf.ldap.user.defaultGroups);
-      UserSchema.findOne({
-        _id: user.uid
-      }, (err, userMongo) => {
-        if (err) {
-          callback(err);
-        }
-        else {
-          userMongo.locked = false;
-          userMongo.save((err) => {
-            callback(err);
-          });
-        }
-      });
-    }, (err) => {
-      if (err) {
-        res.send({
-          status: 'ERR',
-          error: err
-        });
       }
       else {
         res.send({status: 'OK'});

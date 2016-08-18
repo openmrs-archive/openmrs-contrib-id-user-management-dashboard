@@ -9,7 +9,8 @@ class MultiComboBox extends React.Component {
     this.state = {
       value: props.value || [],
       source: props.source,
-      label: props.dialogLabel
+      label: props.dialogLabel,
+      disabled: props.disabled
     };
   }
 
@@ -36,6 +37,7 @@ class MultiComboBox extends React.Component {
     return (
       <div>
         <Autocomplete
+          disabled={this.state.disabled}
           direction={'down'}
           label={this.state.label}
           multiple={true}
