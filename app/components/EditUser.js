@@ -245,7 +245,10 @@ class EditUser extends React.Component {
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
           title={label}>
-          <MultiComboBox action={this.updateGroups} source={this.state.allGroups} value={groups} dialogLabel={'Select groups'} disabled={!user.inMongo}/>
+          <MultiComboBox action={this.updateGroups}
+                         source={this.state.allGroups}
+                         value={groups} dialogLabel={'Select groups'}
+                         disabled={user && !user.inMongo}/>
           {editUser}
           <Switch
             checked={allInLDAP}
