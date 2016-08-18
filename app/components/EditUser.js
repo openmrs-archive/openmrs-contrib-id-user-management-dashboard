@@ -173,7 +173,7 @@ class EditUser extends React.Component {
         </div>;
       editUser =
         <div>
-          <Input type='text' label={'Username'} value={user.username} onChange={this.handleUserPropsChange.bind(this, 'username')} name='username'/>
+          <Input type='text' label={'Username'} value={user.username} onChange={this.handleUserPropsChange.bind(this, 'username')} name='username' disabled={true}/>
           <Input type='text' label={'Primary Email'} value={user.primaryEmail} onChange={this.handleUserPropsChange.bind(this, 'primaryEmail')} name='primaryEmail'/>
           <Input type='text' label={'First Name'} value={user.firstName} onChange={this.handleUserPropsChange.bind(this, 'firstName')} name='firstName'/>
           <Input type='text' label={'Last Name'} value={user.lastName} onChange={this.handleUserPropsChange.bind(this, 'lastName')} name='lastName'/>

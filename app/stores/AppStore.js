@@ -48,6 +48,7 @@ class AppStore {
         inMongo: 'Mongo',
         username: 'Username',
         primaryEmail: 'Primary Email',
+        displayName: 'Display Name',
         locked: 'Locked'
       },
       columns: ['username', 'primaryEmail', 'firstName', 'lastName', 'inLDAP', 'inMongo'],
@@ -67,6 +68,7 @@ class AppStore {
         inLDAP: {type: String},
         groups: {type: [String]},
         primaryEmail: {type: String},
+        displayName: {String},
         emailList: {type: [String]},
         locked: {type: String}
       },
