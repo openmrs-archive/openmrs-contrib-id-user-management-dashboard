@@ -90,6 +90,7 @@ class DataGrid extends React.Component {
             onSelect={this.handleSelect}
             selectable
             multiSelectable
+            onChange={() => {}}
             selected={this.state.selected}
             source={this.state.source}
           />

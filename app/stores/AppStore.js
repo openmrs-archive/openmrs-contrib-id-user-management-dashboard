@@ -58,19 +58,19 @@ class AppStore {
       },
       filters: [],
       query: '',
-      allGroups: ['user', 'dashboard-administrators'],
+      allGroups: [],
       userModel: {},
       defaultModel: {
         username: {type: String},
         firstName: {type: String},
         lastName: {type: String},
-        inMongo: {type: String},
-        inLDAP: {type: String},
+        inMongo: {type: Boolean},
+        inLDAP: {type: Boolean},
         groups: {type: [String]},
         primaryEmail: {type: String},
         displayName: {String},
         emailList: {type: [String]},
-        locked: {type: String}
+        locked: {type: Boolean}
       },
       // pagination
       pagedItems: [],
@@ -126,7 +126,7 @@ class AppStore {
       if (query) {
         var state = true;
         _.each(that.state.filters, (el) => {
-          state && (state = 'Yes' === item[el]);
+          state && (state = item[el]);
         });
         return state;
       }

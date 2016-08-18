@@ -19,10 +19,10 @@ let mapFromDb = (user, fromMongo) => {
   };
   if (fromMongo) {
     obj = _.extend(obj, {
-      _id: user._id,
+      uid: user._id,
       groups: user.groups || [],
       emailList: user.emailList || [],
-      locked: user.locked ? 'Yes' : 'No'
+      locked: user.locked
     });
   }
   return obj;
@@ -35,10 +35,10 @@ let mapToDb = (user) => {
     lastName: user.lastName,
     displayName: user.displayName,
     groups: user.groups,
-    inLDAP: user.inLDAP === 'Yes',
+    inLDAP: user.inLDAP,
     primaryEmail: user.primaryEmail,
     emailList: user.emailList,
-    locked: user.locked === 'Yes'
+    locked: user.locked
   }
 };
 
@@ -58,15 +58,15 @@ module.exports = (router) => {
           else {
             async.each(results, (user, callback) => {
               if (map.get(user.primaryEmail)) {
-                map.get(user.primaryEmail).inMongo = 'Yes';
+                map.get(user.primaryEmail).inMongo = true;
                 map.get(user.primaryEmail).groups = user.groups;
                 map.get(user.primaryEmail).emailList = user.emailList;
-                map.get(user.primaryEmail).locked = user.locked ? 'Yes' : 'No';
+                map.get(user.primaryEmail).locked = user.locked;
               }
               else {
                 let mappedUser = mapFromDb(user, true);
-                mappedUser.inMongo = 'Yes';
-                mappedUser.inLDAP = 'No';
+                mappedUser.inMongo = true;
+                mappedUser.inLDAP = false;
                 map.set(user.primaryEmail, mappedUser);
               }
               callback();
@@ -86,12 +86,12 @@ module.exports = (router) => {
             results = _.reject(results, (user) => { return !user.primaryEmail });
             async.each(results, (user, callback) => {
               if (map.get(user.primaryEmail)) {
-                map.get(user.primaryEmail).inLDAP = 'Yes';
+                map.get(user.primaryEmail).inLDAP = true;
               }
               else {
                 let mappedUser = mapFromDb(user);
-                mappedUser.inLDAP = 'Yes';
-                mappedUser.inMongo = 'No';
+                mappedUser.inLDAP = true;
+                mappedUser.inMongo = false;
                 map.set(user.primaryEmail, mappedUser);
               }
               callback();
@@ -146,7 +146,7 @@ module.exports = (router) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
       UserSchema.findOne({
-        _id: user._id
+        _id: user.uid
       }, (err, userMongo) => {
         if (err) {
           callback(err);
@@ -177,9 +177,9 @@ module.exports = (router) => {
   router.delete('/users', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      if (user.inMongo === 'Yes') {
+      if (user.inMongo) {
         UserSchema.remove({
-          _id: user._id
+          _id: user.uid
         }, (err) => {
           callback(err);
         });
@@ -208,9 +208,9 @@ module.exports = (router) => {
   router.post('/users/resave', (req, res) => {
     let users = req.body.users;
     async.each(users, (user, callback) => {
-      if (user.inMongo == 'YES' && user._id) {
+      if (user.inMongo && user.uid) {
         UserSchema.findOne({
-          _id: user._id
+          _id: user.uid
         }, (err, userMongo) => {
           if (err) {
             callback(err);
@@ -250,7 +250,7 @@ module.exports = (router) => {
     async.each(users, (user, callback) => {
       user.groups = _.concat(user.groups, conf.ldap.user.defaultGroups);
       UserSchema.findOne({
-        _id: user._id
+        _id: user.uid
       }, (err, userMongo) => {
         if (err) {
           callback(err);

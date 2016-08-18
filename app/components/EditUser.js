@@ -44,8 +44,8 @@ class EditUser extends React.Component {
     let users = this.state.users;
     let updated = false;
     _.each(users, (user) => {
-      if (user[field] === 'No' && value) {
-        user[field] = 'Yes';
+      if (!user[field] && value) {
+        user[field] = true;
         updated = true;
       }
     });
@@ -190,10 +190,10 @@ class EditUser extends React.Component {
     allInLDAP = true;
     _.each(this.state.users, (user) => {
       if (allInLDAP) {
-        allInLDAP = user.inLDAP === 'Yes';
+        allInLDAP = user.inLDAP;
       }
       if (allInMongo) {
-        allInMongo = user.inMongo === 'Yes';
+        allInMongo = user.inMongo;
       }
     });
     return (
