@@ -23,7 +23,7 @@ let mapFromDb = (user, fromMongo) => {
     obj = _.extend(obj, {
       uid: user._id,
       groups: user.groups || [],
-      emailList: user.emailList || [],
+      emailList: user.emailList || [user.primaryEmail],
       locked: user.locked
     });
   }
@@ -157,7 +157,6 @@ module.exports = (router) => {
           }
           else {
             userMongo = _.extend(userMongo, mapToDb(user));
-            console.log('user to update: ', userMongo);
             userMongo.save((err) => {
               callback(err);
             });
@@ -218,7 +217,7 @@ module.exports = (router) => {
    */
   router.post('/users/resave', (req, res) => {
     let users = req.body.users;
-    async.each(users, (user, callback) => {
+    async.map(users, (user, callback) => {
       if (user.inMongo && user.uid) {
         UserSchema.findOne({
           _id: user.uid
@@ -227,20 +226,30 @@ module.exports = (router) => {
             callback(err);
           }
           else {
-            userMongo.save((err) => {
-              callback(err);
+            userMongo.save((err, userObj) => {
+              callback(err, mapFromDb(userObj, true));
             });
           }
         });
       }
       else {
-        // TODO: re-implement it (first - get user from ldap, then - save to Mongo)
-        let userMongo = new UserSchema(user);
-        userMongo.save((err) => {
-          callback(err);
+        ldap.getUser(user.username, (err, ldapUser) => {
+          if (err) {
+            callback(err);
+          }
+          else {
+            ldapUser.groups = conf.ldap.user.defaultGroups;
+            ldapUser.emailList = [ldapUser.primaryEmail];
+            ldapUser.locked = false;
+            ldapUser.inLDAP = true;
+            let userMongo = new UserSchema(ldapUser);
+            userMongo.save((err, userObj) => {
+              callback(err, mapFromDb(userObj, true));
+            });
+          }
         });
       }
-    }, (err) => {
+    }, (err, results) => {
       if (err) {
         res.send({
           status: 'ERR',
@@ -248,7 +257,7 @@ module.exports = (router) => {
         })
       }
       else {
-        res.send({status: 'OK'});
+        res.send({status: 'OK', data: results});
       }
     });
   });

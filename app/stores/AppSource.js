@@ -51,8 +51,8 @@ const AppSource = {
     });
   }           ,
   resaveUsers: (users, callback) => {
-    return axios.post(`${API_ROOT}/users/resave`, {data: {users}}).then((response) => {
-      handleResponse(response, () => {
+    return axios.post(`${API_ROOT}/users/resave`, {users}).then((response) => {
+      handleResponse(response, (data) => {
         if (callback) {
           callback();
         }
