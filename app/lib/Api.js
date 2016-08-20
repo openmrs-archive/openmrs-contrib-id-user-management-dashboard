@@ -163,8 +163,17 @@ module.exports = (router) => {
         });
       }
       else {
-        ldap.updateUser(user.username, (err) => {
-          callback(err);
+        ldap.getUser(user.username, (err, userLDAP) => {
+          if (err) {
+            callback(err);
+
+          }
+          else {
+            userLDAP = _.merge(userLDAP, user);
+            ldap.updateUser(userLDAP, (err) => {
+              callback(err);
+            });
+          }
         });
       }
     }, (err) => {
