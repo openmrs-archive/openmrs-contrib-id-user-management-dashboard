@@ -3,7 +3,6 @@ import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import {IconButton} from 'react-toolbox/lib/button';
 import {Col, Row} from 'react-flexbox-grid';
-import {Snackbar} from 'react-toolbox';
 import Switch from 'react-toolbox/lib/switch';
 import Input from 'react-toolbox/lib/input';
 import _ from 'lodash';
@@ -20,13 +19,12 @@ class EditUser extends React.Component {
       allGroups: AppStore.getState().allGroups,
       users: props.users,
       active: false,
-      snackbar: false
+      //snackbar: false
     };
 
     this.updateGroups = this.updateGroups.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleRemoveUser = this.handleRemoveUser.bind(this);
-    this.handleSnackbarTimeout = this.handleSnackbarTimeout.bind(this);
     this.addEmptyEmail = this.addEmptyEmail.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.removeEmail = this.removeEmail.bind(this);
@@ -54,7 +52,7 @@ class EditUser extends React.Component {
         users: users,
         resave: true
       });
-      this.setState({snackbar: true, users});
+      this.setState({users});
     }
   };
 
@@ -73,20 +71,12 @@ class EditUser extends React.Component {
 
   handleResetPass() {
     // TODO: add logic for password reset
-    this.setState({snackbar: true});
+    //this.setState({snackbar: true});
   };
 
   handleRemoveUser() {
     AppActions.deleteUsers(this.state.users);
   }
-
-  handleSnackbarClick () {
-    this.setState({snackbar: false});
-  };
-
-  handleSnackbarTimeout() {
-    this.setState({snackbar: false});
-  };
 
   updateGroups(value) {
     let users = this.state.users;
@@ -137,7 +127,7 @@ class EditUser extends React.Component {
       user = this.state.users[0];
       label = `Edit User "${user.username}"`;
       groups = user.groups;
-      sucessLabel =  `User was successfully updated`;
+     // sucessLabel =  `User was successfully updated`;
       for (var index in user.emailList) {
         if (user.emailList[index] === user.primaryEmail) {
           emails.push(
@@ -219,7 +209,7 @@ class EditUser extends React.Component {
     else {
       label = `Edit ${this.state.users.length} users`;
       groups = [];
-      sucessLabel = `${this.state.users.length} users were successfully updated`;
+    //  sucessLabel = `${this.state.users.length} users were successfully updated`;
       editUser = '';
     }
     allInMongo = true;
@@ -247,8 +237,8 @@ class EditUser extends React.Component {
           title={label}>
           <MultiComboBox action={this.updateGroups}
                          source={this.state.allGroups}
-                         value={groups} dialogLabel={'Select groups'}
-                         disabled={user && !user.inMongo}/>
+                         value={groups}
+                         dialogLabel={'Select groups'}/>
           {editUser}
           <Switch
             checked={allInLDAP}
@@ -268,16 +258,6 @@ class EditUser extends React.Component {
           <Button label='Remove User' accent onClick={this.handleRemoveUser}/>
           <Button label='Reset Password' accent onClick={this.handleResetPass}/>
         </Dialog>
-        <Snackbar
-          action='Hide'
-          active={this.state.snackbar}
-          icon='question_answer'
-          label={sucessLabel}
-          timeout={2000}
-          onClick={this.handleSnackbarClick}
-          onTimeout={this.handleSnackbarTimeout}
-          type='accept'
-        />
       </div>
     );
   }

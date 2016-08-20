@@ -3,8 +3,6 @@ import Dialog from 'react-toolbox/lib/dialog';
 import Button from 'react-toolbox/lib/button';
 import MultiComboBox from './MultiComboBox';
 
-import AppActions from '../actions/AppActions';
-
 class ComboBox extends React.Component {
   constructor(props) {
     super(props);

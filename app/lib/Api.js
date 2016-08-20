@@ -16,13 +16,12 @@ let mapFromDb = (user, fromMongo) => {
     lastName: user.lastName,
     displayName: user.displayName,
     primaryEmail: user.primaryEmail,
-    groups: [],
+    groups: user.groups || [],
     emailList: []
   };
   if (fromMongo) {
     obj = _.extend(obj, {
       uid: user._id,
-      groups: user.groups || [],
       emailList: user.emailList || [user.primaryEmail],
       locked: user.locked
     });
@@ -227,7 +226,10 @@ module.exports = (router) => {
           }
           else {
             userMongo.save((err, userObj) => {
-              callback(err, mapFromDb(userObj, true));
+              if (!err && userObj) {
+                callback(err, mapFromDb(userObj, true));
+              }
+              else callback(err);
             });
           }
         });
@@ -238,13 +240,18 @@ module.exports = (router) => {
             callback(err);
           }
           else {
-            ldapUser.groups = conf.ldap.user.defaultGroups;
+            if (!ldapUser.groups) {
+              ldapUser.groups = conf.ldap.user.defaultGroups;
+            }
             ldapUser.emailList = [ldapUser.primaryEmail];
             ldapUser.locked = false;
             ldapUser.inLDAP = true;
             let userMongo = new UserSchema(ldapUser);
             userMongo.save((err, userObj) => {
-              callback(err, mapFromDb(userObj, true));
+              if (!err && userObj) {
+                callback(err, mapFromDb(userObj, true));
+              }
+              else callback(err);
             });
           }
         });
