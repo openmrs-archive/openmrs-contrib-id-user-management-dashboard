@@ -1,26 +1,22 @@
 import React from 'react';
 import {Snackbar} from 'react-toolbox';
 
+import AppActions from '../actions/AppActions';
+import AppStore from '../stores/AppStore';
+
 class Message extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: false,
-      text: props.text
-    };
-  }
 
   handleSnackbarClose() {
-    this.setState({active: false});
+    AppActions.showMessage();
   };
 
   render() {
     return <Snackbar
       action='Hide'
-      active={this.state.active}
+      active={AppStore.getState().message != null}
       icon='question_answer'
-      label={this.state.text}
-      timeout={2000}
+      label={AppStore.getState().message}
+      timeout={3000}
       onClick={this.handleSnackbarClose}
       onTimeout={this.handleSnackbarClose}
       type='accept'

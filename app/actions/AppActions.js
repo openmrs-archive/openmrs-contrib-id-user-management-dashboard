@@ -9,5 +9,6 @@ export default AltInstance.generateActions(
   'updateUsers',
   'deleteUsers',
   'setCurrentPage',
-  'setSize'
+  'setSize',
+  'showMessage'
 );

@@ -15,7 +15,8 @@ class AppStore {
       updateUsers,
       deleteUsers,
       setCurrentPage,
-      setSize
+      setSize,
+      showMessage
     } = Actions;
 
     this.bindListeners({
@@ -27,7 +28,8 @@ class AppStore {
       updateUsers: updateUsers,
       deleteUsers: deleteUsers,
       setCurrentPage: setCurrentPage,
-      setSize: setSize
+      setSize: setSize,
+      showMessage: showMessage
     });
 
     this.applyFilters = this.applyFilters.bind(this);
@@ -179,18 +181,20 @@ class AppStore {
     let users = options.users;
     let resave = options.resave;
     let updateEach = (updatedUsers) => {
-      let allItems = that.state.allItems;
-      _.each(updatedUsers, (user) => {
-        let old = _.find(allItems, (item) => {
-          return user._id === item._id;
+      if (updatedUsers) {
+        let allItems = that.state.allItems;
+        _.each(updatedUsers, (user) => {
+          let old = _.find(allItems, (item) => {
+            return user._id === item._id;
+          });
+          let index = allItems.indexOf(old);
+          if (index !== -1) {
+            allItems[index] = user;
+          }
         });
-        let index = allItems.indexOf(old);
-        if (index !== -1) {
-          allItems[index] = user;
-        }
-      });
-      that.setState({allItems});
-      that.applyFilters();
+        that.setState({allItems});
+        that.applyFilters();
+      }
     };
     if (resave) {
       Source.resaveUsers(users, updateEach)
@@ -201,10 +205,12 @@ class AppStore {
   }
   deleteUsers(users) {
     let that = this;
-    Source.deleteUsers(users, () => {
-      let allItems = _.difference(this.state.allItems, users);
-      that.setState({allItems});
-      that.applyFilters();
+    Source.deleteUsers(users, (error) => {
+      if (!error) {
+        let allItems = _.difference(this.state.allItems, users);
+        that.setState({allItems});
+        that.applyFilters();
+      }
     });
   }
   setCurrentPage(currentPage, init) {
@@ -246,6 +252,9 @@ class AppStore {
     let size = value[0];
     this.setState({size});
     this.setCurrentPage(this.state.currentPage);
+  }
+  showMessage(message) {
+    this.setState({message});
   }
 }
 

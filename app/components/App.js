@@ -4,6 +4,7 @@ import Header from './Header';
 import DataGrid from './DataGrid';
 import SearchBox from './SearchBox';
 import ComboBox from './ComboBox';
+import Message from './Message';
 
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
@@ -80,6 +81,7 @@ class App extends React.Component {
                     currentPage={this.state.currentPage}
                     lastPage={this.state.lastPage}
                     pages={this.state.pages}/>
+          <Message/>
         </Grid>
       </div>
     )

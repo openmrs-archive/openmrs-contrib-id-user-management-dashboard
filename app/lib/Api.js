@@ -146,7 +146,7 @@ module.exports = (router) => {
    */
   router.post('/users', (req, res) => {
     let users = req.body.users;
-    async.each(users, (user, callback) => {
+    async.map(users, (user, callback) => {
       if (user.inMongo && user.uid) {
         UserSchema.findOne({
           _id: user.uid
@@ -156,8 +156,8 @@ module.exports = (router) => {
           }
           else {
             userMongo = _.extend(userMongo, mapToDb(user));
-            userMongo.save((err) => {
-              callback(err);
+            userMongo.save((err, result) => {
+              callback(err, result);
             });
           }
         });
@@ -166,17 +166,16 @@ module.exports = (router) => {
         ldap.getUser(user.username, (err, userLDAP) => {
           if (err) {
             callback(err);
-
           }
           else {
             userLDAP = _.merge(userLDAP, user);
-            ldap.updateUser(userLDAP, (err) => {
-              callback(err);
+            ldap.updateUser(userLDAP, (err, result) => {
+              callback(err, result);
             });
           }
         });
       }
-    }, (err) => {
+    }, (err, results) => {
       if (err) {
         res.send({
           status: 'ERR',
@@ -184,7 +183,12 @@ module.exports = (router) => {
         })
       }
       else {
-        res.send({status: 'OK'});
+        let count = results.length > 1 ? 'users' : 'user';
+        res.send({
+          status: 'OK',
+          data: results,
+          message: `${results.length} ${count} updated successfully`
+        });
       }
     });
   });
@@ -215,7 +219,11 @@ module.exports = (router) => {
         });
       }
       else {
-        res.send({status: 'OK'});
+        let count = results.length > 1 ? 'users' : 'user';
+        res.send({
+          status: 'OK',
+          message: `${results.length} ${count} deleted successfully`
+        });
       }
     });
   });
@@ -273,7 +281,12 @@ module.exports = (router) => {
         })
       }
       else {
-        res.send({status: 'OK', data: results});
+        let count = results.length > 1 ? 'users' : 'user';
+        res.send({
+          status: 'OK',
+          data: results,
+          message: `${results.length} ${count} re-saved successfully`
+        });
       }
     });
   });
