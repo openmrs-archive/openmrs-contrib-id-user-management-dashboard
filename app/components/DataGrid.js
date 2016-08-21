@@ -3,6 +3,8 @@ import {Grid, Col, Row} from 'react-flexbox-grid';
 import {Link} from 'react-router';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import React from 'react';
+import Button from 'react-toolbox/lib/button';
+import Switch from 'react-toolbox/lib/switch';
 import _ from 'lodash';
 
 import AppStore from '../stores/AppStore';
@@ -26,10 +28,12 @@ class DataGrid extends React.Component {
       source: props.source,
       prevSelected: []
     };
+
+    this.handleRemove = this.handleRemove.bind(this);
+    this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
-    // clear selection on each state change
     this.handleSelect([]);
     this.setState({
       source: newProps.source,
@@ -51,23 +55,72 @@ class DataGrid extends React.Component {
     this.setState({selected});
   };
 
-  render () {
-    let editUser;
-    if (this.state.selected && this.state.selected.length) {
-      let source = this.state.source;
-      let users = _.map(this.state.selected, (sel) => {
-        return source[sel];
+  handleRemove() {
+    AppActions.deleteUsers(this.state.selected);
+  }
+
+  handleUserStatusChange(field, value) {
+    let userIndexes = this.state.selected;
+    let updated = false;
+    let users = _.map(userIndexes, (index) => {
+      let user = this.state.source[index];
+      if (!user[field] && value) {
+        user[field] = true;
+        updated = true;
+      }
+      return user;
+    });
+    if (updated) {
+      AppActions.updateUsers({
+        users: users,
+        resave: true
       });
+    }
+  };
+
+  render () {
+    let editUserBlock;
+    if (this.state.selected && this.state.selected.length) {
+      let usersSource = this.state.source;
+      let allUsersInMongoFlag = true;
+      let allUsersInLDAPFlag = true;
       let allItems = AppStore.getState().allItems;
-      let usersGlobal = _.map(users, (user) => {
+      let selectedUsers = _.map(this.state.selected, (index) => {
+        let user = usersSource[index];
+        if (allUsersInLDAPFlag) {
+          allUsersInLDAPFlag = user.inLDAP;
+        }
+        if (allUsersInMongoFlag) {
+          allUsersInMongoFlag = user.inMongo;
+        }
         return _.find(allItems, (item) => {
           return item.primaryEmail === user.primaryEmail;
-        })
+        });
       });
-      editUser = <EditUser mini users={usersGlobal}/>;
+      editUserBlock =
+        <Row style={{marginTop: '15px'}} >
+          <Col md={3}>
+            <EditUser mini users={selectedUsers}/>
+          </Col>
+          <Col md={2} mdOffset={1}>
+            <Button label='Remove' accent onClick={this.handleRemove}/>
+          </Col>
+          <Col md={2} style={{marginTop: '5px'}}>
+            <Switch
+              checked={allUsersInLDAPFlag}
+              label={'LDAP'}
+              onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}/>
+          </Col>
+          <Col md={2} style={{marginTop: '5px'}}>
+            <Switch
+              checked={allUsersInMongoFlag}
+              label={'Mongo'}
+              onChange={this.handleUserStatusChange.bind(this, 'inMongo')}/>
+          </Col>
+        </Row>;
     }
     else {
-      editUser = <div></div>;
+      editUserBlock = '';
     }
     let pages = this.state.pages;
     let current = this.state.current;
@@ -81,7 +134,45 @@ class DataGrid extends React.Component {
     else {
       infoText = (offset + 1) + '-' + (offset + len);
     }
-    let info = <div style={{marginTop: '25px'}}>{infoText + ' of ' + this.state.all.length + ' shown'}</div>;
+    let paginationInfo = <div style={{marginTop: '25px'}}>{infoText + ' of ' + this.state.all.length + ' shown'}</div>;
+    let paginationBlock = !this.state.selected.length ?
+      <Row>
+        <Col md={3} mdOffset={4}>
+          {paginationInfo}
+        </Col>
+        <Col md={2} mdOffset={1}>
+          <Row>
+            <Dropdown
+              auto
+              onChange={AppActions.setSize}
+              source={AppStore.getState().sizes}
+              value={AppStore.getState().size}
+            />
+          </Row>
+        </Col>
+        <Col md={2}>
+          <Row style={{marginTop: '25px'}}>
+            <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px', color: '#000000'}}>
+              &#171;
+            </Link>
+            {pages.map(function(page, index) {
+              if (current == page) {
+                return <Link key={index} style={{margin: '5px', color: '#1976d2'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
+                  {page}
+                </Link>
+              }
+              else {
+                return <Link key={index} style={{margin: '5px', color: '#000000'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
+                  {page}
+                </Link>
+              }
+            })}
+            <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px', color: '#000000'}}>
+              &#187;
+            </Link>
+          </Row>
+        </Col>
+      </Row> : '';
     return (
       <Grid>
         <Row>
@@ -95,46 +186,8 @@ class DataGrid extends React.Component {
             source={this.state.source}
           />
         </Row>
-        <Row>
-          <Col md={2}>
-            {editUser}
-          </Col>
-          <Col md={3} mdOffset={2}>
-            {info}
-          </Col>
-          <Col md={2} mdOffset={1}>
-            <Row>
-              <Dropdown
-                auto
-                onChange={AppActions.setSize}
-                source={AppStore.getState().sizes}
-                value={AppStore.getState().size}
-              />
-            </Row>
-          </Col>
-          <Col md={2}>
-            <Row style={{marginTop: '25px'}}>
-              <Link to={{pathname: 'user-dashboard', query: {page: 1}}} style={{margin: '5px', marginLeft: '15px', color: '#000000'}}>
-                &#171;
-              </Link>
-              {pages.map(function(page, index) {
-                if (current == page) {
-                  return <Link key={index} style={{margin: '5px', color: '#1976d2'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
-                    {page}
-                  </Link>
-                }
-                else {
-                  return <Link key={index} style={{margin: '5px', color: '#000000'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
-                    {page}
-                  </Link>
-                }
-              })}
-              <Link to={{pathname: 'user-dashboard', query: {page: last}}} style={{margin: '5px', color: '#000000'}}>
-                &#187;
-              </Link>
-            </Row>
-          </Col>
-        </Row>
+        {editUserBlock}
+        {paginationBlock}
       </Grid>
     );
   }

@@ -60,7 +60,7 @@ class App extends React.Component {
             <SearchBox label={'Search...'} onChange={this.onSearchBoxChange}/>
           </Row>
           <Row>
-            <Col md={9} style={{marginTop: '5px'}}>
+            <Col md={9} sm={8} style={{marginTop: '5px'}}>
               <GridOptions filters={this.state.filters}
                            sorters={this.state.sort}/>
             </Col>
