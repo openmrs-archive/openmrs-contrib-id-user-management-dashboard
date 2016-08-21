@@ -60,8 +60,9 @@ class App extends React.Component {
             <SearchBox label={'Search...'} onChange={this.onSearchBoxChange}/>
           </Row>
           <Row>
-            <Col md={10} style={{marginTop: '5px'}}>
-              <GridOptions filters={this.state.filters}/>
+            <Col md={9} style={{marginTop: '5px'}}>
+              <GridOptions filters={this.state.filters}
+                           sorters={this.state.sort}/>
             </Col>
             <Col md={1}>
               <ComboBox source={this.state.allFilters}
@@ -77,6 +78,13 @@ class App extends React.Component {
                         source={this.state.allColumns}
                         icon={'view_headline'}
                         dialogTitle={'Display selected columns'}/>
+            </Col>
+            <Col md={1}>
+              <ComboBox action={AppActions.setSort}
+                        value={this.state.sort}
+                        source={this.state.allColumns}
+                        icon={'sort'}
+                        dialogTitle={'Sort by selected fields'}/>
             </Col>
           </Row>
           <DataGrid source={this.state.pagedItems}

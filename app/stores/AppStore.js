@@ -61,7 +61,7 @@ class AppStore {
         inMongo: 'In Mongo'
       },
       filters: [],
-      sort: 'username',
+      sort: ['username'],
       query: '',
       allGroups: [],
       userModel: {},
@@ -146,7 +146,9 @@ class AppStore {
       }
       return obj;
     }), (i) => {
-      return i[that.state.sort];
+      return _.map(that.state.sort, (sorter) => {
+        return i[sorter];
+      }).join('_');
     });
     // apply user model
     let userModel = {};
@@ -161,7 +163,6 @@ class AppStore {
       this.state.userModel = userModel;
     }
     this.setCurrentPage(1, init);
-    console.log(Object.keys(this.state.allColumns))
   }
   initGroupList(allGroups) {
     this.state.allGroups = allGroups;
