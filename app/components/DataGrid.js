@@ -56,7 +56,14 @@ class DataGrid extends React.Component {
   };
 
   handleRemove() {
-    AppActions.deleteUsers(this.state.selected);
+    let that = this;
+    let users = _.map(this.state.selected, (index) => {
+      let user = that.state.source[index];
+      return _.find(AppStore.getState().allItems, (globalUser) => {
+        return globalUser.username === user.username;
+      });
+    });
+    AppActions.deleteUsers(users);
   }
 
   handleUserStatusChange(field, value) {

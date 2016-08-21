@@ -198,20 +198,20 @@ module.exports = (router) => {
    */
   router.delete('/users', (req, res) => {
     let users = req.body.users;
-    async.each(users, (user, callback) => {
+    async.map(users, (user, callback) => {
       if (user.inMongo && user.uid) {
         UserSchema.remove({
           _id: user.uid
         }, (err) => {
-          callback(err);
+          callback(err, user);
         });
       }
       else {
         ldap.deleteUser(user.username, (err) => {
-          callback(err);
+          callback(err, user);
         })
       }
-    }, (err) => {
+    }, (err, results) => {
       if (err) {
         res.send({
           status: 'ERR',
