@@ -97,6 +97,15 @@ class EditUser extends React.Component {
     this.setState({users});
   }
 
+  setAsPrimary(index) {
+    let users = this.state.users;
+    let email = users[0].emailList[index];
+    users[0].emailList.splice(index, 1);
+    users[0].emailList.unshift(email);
+    users[0].primaryEmail = email;
+    this.setState({users});
+  }
+
   changeEmail(index, value) {
     let users = this.state.users;
     if (index == 0) {
@@ -143,7 +152,7 @@ class EditUser extends React.Component {
         else {
           emails.push(
             <Row key={'email' + index}>
-              <Col md={11} sm={10}>
+              <Col md={10} sm={8}>
                 <Input type='email'
                        label={'Email'}
                        value={user.emailList[index]}
@@ -152,10 +161,16 @@ class EditUser extends React.Component {
                        disabled={user.locked}/>
               </Col>
               <Col md={1} sm={2}>
+                <IconButton icon='done'
+                            style={{marginTop: '25px', marginLeft: '-10px'}}
+                            onClick={() => {this.setAsPrimary(index)}}
+                            disabled={user.locked}/>
+              </Col>
+              <Col md={1} sm={2}>
                 <IconButton icon='clear'
                             style={{marginTop: '25px', marginLeft: '-10px'}}
                             onClick={() => {this.removeEmail(index)}}
-                            disabled={user.locled}/>
+                            disabled={user.locked}/>
               </Col>
             </Row>
           )
