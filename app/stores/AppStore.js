@@ -11,6 +11,7 @@ class AppStore {
       initGroupList,
       setFilters,
       setQuery,
+      setSort,
       setColumns,
       updateUsers,
       deleteUsers,
@@ -24,6 +25,7 @@ class AppStore {
       initGroupList: initGroupList,
       setFilters: setFilters,
       setQuery: setQuery,
+      setSort: setSort,
       setColumns: setColumns,
       updateUsers: updateUsers,
       deleteUsers: deleteUsers,
@@ -59,6 +61,7 @@ class AppStore {
         inMongo: 'In Mongo'
       },
       filters: [],
+      sort: 'username',
       query: '',
       allGroups: [],
       userModel: {},
@@ -134,7 +137,7 @@ class AppStore {
       }
       return false;
     });
-    let filteredItems = _.map(filteredFirstItems, (item) => {
+    let filteredItems = _.sortBy(_.map(filteredFirstItems, (item) => {
       let obj = {};
       for (var key in item) {
         if (key && that.state.columns.indexOf(key) !== -1) {
@@ -142,6 +145,8 @@ class AppStore {
         }
       }
       return obj;
+    }), (i) => {
+      return i[that.state.sort];
     });
     // apply user model
     let userModel = {};
@@ -156,6 +161,7 @@ class AppStore {
       this.state.userModel = userModel;
     }
     this.setCurrentPage(1, init);
+    console.log(Object.keys(this.state.allColumns))
   }
   initGroupList(allGroups) {
     this.state.allGroups = allGroups;
@@ -170,6 +176,10 @@ class AppStore {
   }
   setQuery(query) {
     this.setState({query});
+    this.applyFilters();
+  }
+  setSort(sort) {
+    this.setState({sort});
     this.applyFilters();
   }
   setColumns(columns) {

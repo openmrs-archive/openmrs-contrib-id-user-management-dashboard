@@ -1,10 +1,12 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-flexbox-grid';
+
 import Header from './Header';
 import DataGrid from './DataGrid';
 import SearchBox from './SearchBox';
 import ComboBox from './ComboBox';
 import Message from './Message';
+import GridOptions from './GridOptions';
 
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
@@ -17,7 +19,6 @@ class App extends React.Component {
     if (props.location.query.user) {
       AppActions.setQuery(props.location.query.user);
     }
-    //AppActions.setCurrentPage(props.location.query.page, true);
     this.onStoreChange = this.onStoreChange.bind(this);
   }
 
@@ -56,21 +57,25 @@ class App extends React.Component {
         <Header />
         <Grid>
           <Row>
-            <SearchBox label={'Filter...'} onChange={this.onSearchBoxChange}/>
+            <SearchBox label={'Search...'} onChange={this.onSearchBoxChange}/>
           </Row>
           <Row>
-            <Col md style={{marginTop: '20px'}}>
+            <Col md={10} style={{marginTop: '5px'}}>
+              <GridOptions filters={this.state.filters}/>
+            </Col>
+            <Col md={1}>
               <ComboBox source={this.state.allFilters}
                         value={this.state.filters}
                         action={AppActions.setFilters}
+                        icon={'filter_list'}
                         dialogLabel={'Choose types to filter'}
                         dialogTitle={'Filter data'}/>
             </Col>
-            <Col md style={{marginTop: '20px'}}>
+            <Col md={1}>
               <ComboBox action={AppActions.setColumns}
                         value={this.state.columns}
                         source={this.state.allColumns}
-                        dialogLabel={'Choose columns to display'}
+                        icon={'view_headline'}
                         dialogTitle={'Display selected columns'}/>
             </Col>
           </Row>
