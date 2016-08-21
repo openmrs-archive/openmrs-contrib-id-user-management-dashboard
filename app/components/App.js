@@ -65,11 +65,17 @@ class App extends React.Component {
                            sorters={this.state.sort}/>
             </Col>
             <Col md={1}>
+              <ComboBox action={AppActions.setSort}
+                        value={this.state.sort}
+                        source={this.state.allColumns}
+                        icon={'sort'}
+                        dialogTitle={'Sort by selected fields'}/>
+            </Col>
+            <Col md={1}>
               <ComboBox source={this.state.allFilters}
                         value={this.state.filters}
                         action={AppActions.setFilters}
                         icon={'filter_list'}
-                        dialogLabel={'Choose types to filter'}
                         dialogTitle={'Filter data'}/>
             </Col>
             <Col md={1}>
@@ -78,13 +84,6 @@ class App extends React.Component {
                         source={this.state.allColumns}
                         icon={'view_headline'}
                         dialogTitle={'Display selected columns'}/>
-            </Col>
-            <Col md={1}>
-              <ComboBox action={AppActions.setSort}
-                        value={this.state.sort}
-                        source={this.state.allColumns}
-                        icon={'sort'}
-                        dialogTitle={'Sort by selected fields'}/>
             </Col>
           </Row>
           <DataGrid source={this.state.pagedItems}
