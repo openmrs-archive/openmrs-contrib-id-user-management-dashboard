@@ -55,7 +55,7 @@ class AppStore {
         displayName: 'Display Name',
         locked: 'Locked'
       },
-      columns: ['username', 'primaryEmail', 'firstName', 'lastName', 'inLDAP', 'inMongo'],
+      columns: ['username', 'primaryEmail', 'firstName', 'lastName', 'inLDAP', 'inMongo', 'locked'],
       allFilters: {
         inLDAP: 'In LDAP',
         inMongo: 'In Mongo'

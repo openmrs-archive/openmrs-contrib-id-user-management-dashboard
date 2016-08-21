@@ -19,7 +19,6 @@ class EditUser extends React.Component {
       allGroups: AppStore.getState().allGroups,
       users: props.users,
       active: false,
-      //snackbar: false
     };
 
     this.updateGroups = this.updateGroups.bind(this);
@@ -111,8 +110,7 @@ class EditUser extends React.Component {
     AppActions.updateUsers({
       users: this.state.users
     });
-    // TODO: make it async
-    this.setState({active: !this.state.active, snackbar: true});
+    this.setState({active: !this.state.active});
   };
 
   actions = [
@@ -127,7 +125,6 @@ class EditUser extends React.Component {
       user = this.state.users[0];
       label = `Edit User "${user.username}"`;
       groups = user.groups;
-     // sucessLabel =  `User was successfully updated`;
       for (var index in user.emailList) {
         if (user.emailList[index] === user.primaryEmail) {
           emails.push(
@@ -209,7 +206,6 @@ class EditUser extends React.Component {
     else {
       label = `Edit ${this.state.users.length} users`;
       groups = [];
-    //  sucessLabel = `${this.state.users.length} users were successfully updated`;
       editUser = '';
     }
     allInMongo = true;
