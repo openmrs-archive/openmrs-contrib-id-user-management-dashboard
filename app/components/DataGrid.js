@@ -10,6 +10,8 @@ import _ from 'lodash';
 import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
 
+import theme from './dropdown.scss';
+
 import EditUser from './EditUser';
 
 class DataGrid extends React.Component {
@@ -161,6 +163,7 @@ class DataGrid extends React.Component {
           <Row>
             <Dropdown
               auto
+              theme={theme}
               onChange={AppActions.setSize}
               source={AppStore.getState().sizes}
               value={AppStore.getState().size}
