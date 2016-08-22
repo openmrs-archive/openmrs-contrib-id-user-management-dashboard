@@ -11,6 +11,7 @@ import AppStore from '../stores/AppStore';
 import AppActions from '../actions/AppActions';
 
 import MultiComboBox from './MultiComboBox';
+import theme from './dialog.scss';
 
 class EditUser extends React.Component {
   constructor(props) {
@@ -209,7 +210,8 @@ class EditUser extends React.Component {
           active={this.state.active}
           onEscKeyDown={this.handleToggle}
           onOverlayClick={this.handleToggle}
-          title={editButtonLabel}>
+          title={editButtonLabel}
+          theme={theme}>
           <MultiComboBox action={this.updateGroups}
                          source={this.state.allGroups}
                          value={groups}

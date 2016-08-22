@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
-import theme from './multicombobox.scss';
+import theme from './autocomplete.scss';
 
 class MultiComboBox extends React.Component {
   constructor(props) {

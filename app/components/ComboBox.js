@@ -3,6 +3,8 @@ import Dialog from 'react-toolbox/lib/dialog';
 import {IconButton} from 'react-toolbox/lib/button';
 import MultiComboBox from './MultiComboBox';
 
+import theme from './dialog.scss';
+
 class ComboBox extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +48,7 @@ class ComboBox extends React.Component {
       <div style={{display: 'inline'}}>
         <IconButton label={this.state.label} icon={this.state.icon} onClick={this.handleToggle} style={{display: 'inline-block'}}/>
         <Dialog
+          theme={theme}
           actions={this.actions}
           active={this.state.active}
           onEscKeyDown={this.handleToggle}

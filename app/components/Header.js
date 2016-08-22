@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { AppBar } from 'react-toolbox/lib/app_bar';
-import theme from './header.scss';
+import theme from './style.scss';
 
 const Header = ({ children, ...other }) => (
   <AppBar {...other} theme={theme}>
