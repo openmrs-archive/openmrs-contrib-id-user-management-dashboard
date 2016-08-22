@@ -121,7 +121,7 @@ class DataGrid extends React.Component {
           allUsersInMongoFlag = user.inMongo === usersSource[first].inMongo;
         }
         return _.find(allItems, (item) => {
-          return item.primaryEmail === user.primaryEmail;
+          return item.username === user.username;
         });
       });
       let editUserSwitches = [];

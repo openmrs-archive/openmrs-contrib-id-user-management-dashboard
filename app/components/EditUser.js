@@ -18,7 +18,8 @@ class EditUser extends React.Component {
     super(props);
     this.state = {
       allGroups: AppStore.getState().allGroups,
-      users: props.users,
+      original: _.cloneDeep(props.users),
+      users: _.cloneDeep(props.users),
       active: false,
     };
 
@@ -30,11 +31,15 @@ class EditUser extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({users: newProps.users});
+    this.setState({users: _.cloneDeep(newProps.users), original: _.cloneDeep(props.users)});
   }
 
   handleToggle = () => {
-    this.setState({active: !this.state.active});
+    let users = this.state.users;
+    if (this.state.active) {
+      users = this.state.original;
+    }
+    this.setState({active: !this.state.active, users});
   };
 
   handleUserPropsChange(key, value) {
