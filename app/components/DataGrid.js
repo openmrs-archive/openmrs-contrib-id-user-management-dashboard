@@ -164,7 +164,7 @@ class DataGrid extends React.Component {
             </Link>
             {pages.map(function(page, index) {
               if (current == page) {
-                return <Link key={index} style={{margin: '5px', color: '#1976d2'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
+                return <Link key={index} style={{margin: '5px', color: '#FF9800'}} to={{pathname: 'user-dashboard', query: {page: page}}}>
                   {page}
                 </Link>
               }
