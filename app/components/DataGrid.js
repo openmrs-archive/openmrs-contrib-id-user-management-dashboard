@@ -63,25 +63,35 @@ class DataGrid extends React.Component {
         return globalUser.username === user.username;
       });
     });
-    AppActions.deleteUsers(users);
+    AppActions.deleteUsers({users: users});
   }
 
   handleUserStatusChange(field, value) {
     let userIndexes = this.state.selected;
-    let updated = false;
+    let toResave = false;
     let users = _.map(userIndexes, (index) => {
       let user = this.state.source[index];
-      if (!user[field] && value) {
-        user[field] = true;
-        updated = true;
+      let userGlobal = _.find(AppStore.getState().allItems, (globalUser) => {
+        return globalUser.username === user.username;
+      });
+      if (!userGlobal[field] && value) {
+        toResave = true;
       }
-      return user;
+      return userGlobal;
     });
-    if (updated) {
+    if (toResave) {
       AppActions.updateUsers({
         users: users,
         resave: true
       });
+    }
+    else {
+      if (field === 'inMongo') {
+        AppActions.deleteUsers({users: users, onlyMongo: true});
+      }
+      else {
+        AppActions.deleteUsers({users: users, onlyLDAP: true});
+      }
     }
   };
 

@@ -42,13 +42,16 @@ const AppSource = {
       });
     });
   },
-  deleteUsers: (users, callback) => {
-    return axios.delete(`${API_ROOT}/users`, {data: {users}}).then((response) => {
-      handleResponse(response, (error) => {
-        if (callback) {
-          callback(error);
-        }
-      });
+  deleteUsers: (options, callback) => {
+    return axios.delete(`${API_ROOT}/users`, {data: {
+      users: options.users,
+      onlyLDAP: options.onlyLDAP,
+      onlyMongo: options.onlyMongo}}).then((response) => {
+        handleResponse(response, (error) => {
+          if (callback) {
+            callback(error);
+          }
+        });
     });
   }           ,
   resaveUsers: (users, callback) => {

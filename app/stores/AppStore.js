@@ -197,7 +197,7 @@ class AppStore {
         let allItems = that.state.allItems;
         _.each(updatedUsers, (user) => {
           let old = _.find(allItems, (item) => {
-            return user._id === item._id;
+            return user.username === item.username;
           });
           let index = allItems.indexOf(old);
           if (index !== -1) {
@@ -215,12 +215,28 @@ class AppStore {
       Source.updateUsers(users, updateEach);
     }
   }
-  deleteUsers(users) {
+  deleteUsers(options) {
     let that = this;
-    Source.deleteUsers(users, (error) => {
+    Source.deleteUsers(options, (error) => {
       if (!error) {
-        let allItems = _.difference(this.state.allItems, users);
-        that.setState({allItems});
+        let allItems;
+        if (options.onlyLDAP || options.onlyMongo) {
+          allItems = this.state.allItems;
+          _.each(options.users, (user) => {
+            var userGlobal = _.find(allItems, (item) => {
+              return item.username === user.username;
+            });
+            if (options.onlyLDAP) {
+              userGlobal.inLDAP = false;
+            }
+            else if (options.onlyMongo) {
+              userGlobal.inMongo = false;
+            }
+          });
+        }
+        else {
+          allItems = _.difference(this.state.allItems, options.users);
+        }
         that.applyFilters();
       }
     });

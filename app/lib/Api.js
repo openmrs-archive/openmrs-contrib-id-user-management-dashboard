@@ -262,9 +262,13 @@ module.exports = (router) => {
             callback(err);
           }
           else {
+            userMongo.inLDAP = false;
             userMongo.save((err, userObj) => {
               if (!err && userObj) {
-                callback(err, mapFromDb(userObj, true));
+                let mapped = mapFromDb(userObj, true);
+                mapped.inLDAP = true;
+                mapped.inMongo = true;
+                callback(err, mapped);
               }
               else callback(err);
             });
@@ -286,7 +290,10 @@ module.exports = (router) => {
             let userMongo = new UserSchema(ldapUser);
             userMongo.save((err, userObj) => {
               if (!err && userObj) {
-                callback(err, mapFromDb(userObj, true));
+                let mapped = mapFromDb(userObj, true);
+                mapped.inLDAP = true;
+                mapped.inMongo = true;
+                callback(err, mapped);
               }
               else callback(err);
             });
