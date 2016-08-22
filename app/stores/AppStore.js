@@ -236,6 +236,7 @@ class AppStore {
         }
         else {
           allItems = _.difference(this.state.allItems, options.users);
+          that.setState({allItems});
         }
         that.applyFilters();
       }

@@ -219,10 +219,17 @@ module.exports = (router) => {
           });
         }
         else {
-          UserSchema.remove({
+          UserSchema.findOne({
             _id: user.uid
-          }, (err) => {
-            callback(err, user);
+          }, (err, userMongo) => {
+             if (err) {
+               callback(err);
+             }
+             else {
+               userMongo.remove((err) => {
+                 callback(err, user);
+               })
+             }
           });
         }
       }
