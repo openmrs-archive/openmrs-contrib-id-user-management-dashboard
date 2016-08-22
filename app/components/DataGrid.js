@@ -115,13 +115,13 @@ class DataGrid extends React.Component {
           <Col md={2} style={{marginTop: '5px'}}>
             <Switch
               checked={allUsersInLDAPFlag}
-              label={'LDAP'}
+              label={'OpenLDAP'}
               onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}/>
           </Col>
           <Col md={2} style={{marginTop: '5px'}}>
             <Switch
               checked={allUsersInMongoFlag}
-              label={'Mongo'}
+              label={'MongoDb'}
               onChange={this.handleUserStatusChange.bind(this, 'inMongo')}/>
           </Col>
         </Row>;
