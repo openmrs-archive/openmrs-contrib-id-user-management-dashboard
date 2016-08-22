@@ -17,33 +17,26 @@ class DataGrid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      all: props.all,
-      model: props.model,
-      current: props.currentPage,
-      last: props.lastPage,
-      size: props.size,
-      pages: props.pages,
-      selected: [],
-      source: props.source,
-      prevSelected: []
-    };
+    this.state = AppStore.getState();
+    this.state.selected = [];
+    this.state.prevSelected = [];
 
     this.handleRemove = this.handleRemove.bind(this);
     this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
+    this.onStoreChange = this.onStoreChange.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    this.handleSelect([]);
-    this.setState({
-      source: newProps.source,
-      model: newProps.model,
-      pages: newProps.pages,
-      size: newProps.size,
-      current: newProps.currentPage,
-      last: newProps.lastPage,
-      all: newProps.all
-    });
+  componentDidMount() {
+    AppStore.listen(this.onStoreChange);
+  }
+
+  componentWillUnmount() {
+    AppStore.unlisten(this.onStoreChange);
+  }
+
+
+  onStoreChange(state) {
+    this.setState(state);
   }
 
   handleSelect = (selected) => {
@@ -58,7 +51,7 @@ class DataGrid extends React.Component {
   handleRemove() {
     let that = this;
     let users = _.map(this.state.selected, (index) => {
-      let user = that.state.source[index];
+      let user = that.state.pagedItems[index];
       return _.find(AppStore.getState().allItems, (globalUser) => {
         return globalUser.username === user.username;
       });
@@ -70,7 +63,7 @@ class DataGrid extends React.Component {
     let userIndexes = this.state.selected;
     let toResave = false;
     let users = _.map(userIndexes, (index) => {
-      let user = this.state.source[index];
+      let user = this.state.pagedItems[index];
       let userGlobal = _.find(AppStore.getState().allItems, (globalUser) => {
         return globalUser.username === user.username;
       });
@@ -98,7 +91,7 @@ class DataGrid extends React.Component {
   render () {
     let editUserBlock;
     if (this.state.selected && this.state.selected.length) {
-      let usersSource = this.state.source;
+      let usersSource = this.state.pagedItems;
       let allUsersInMongoFlag = true;
       let allUsersInLDAPFlag = true;
       let allItems = AppStore.getState().allItems;
@@ -140,9 +133,9 @@ class DataGrid extends React.Component {
       editUserBlock = '';
     }
     let pages = this.state.pages;
-    let current = this.state.current;
-    let last = this.state.last;
-    let len = this.state.source.length;
+    let current = this.state.currentPage;
+    let last = this.state.lastPage;
+    let len = this.state.pagedItems.length;
     let offset = this.state.size * (current-1);
     let infoText;
     if (len < 2) {
@@ -151,7 +144,7 @@ class DataGrid extends React.Component {
     else {
       infoText = (offset + 1) + '-' + (offset + len);
     }
-    let paginationInfo = <div style={{marginTop: '25px'}}>{infoText + ' of ' + this.state.all.length + ' shown'}</div>;
+    let paginationInfo = <div style={{marginTop: '25px'}}>{infoText + ' of ' + this.state.filteredItems.length + ' shown'}</div>;
     let paginationBlock = !this.state.selected.length ?
       <Row>
         <Col md={3} mdOffset={4}>
@@ -194,13 +187,13 @@ class DataGrid extends React.Component {
       <Grid>
         <Row>
           <Table
-            model={this.state.model}
+            model={this.state.userModel}
             onSelect={this.handleSelect}
             selectable
             multiSelectable
             onChange={() => {}}
             selected={this.state.selected}
-            source={this.state.source}
+            source={this.state.pagedItems}
           />
         </Row>
         {editUserBlock}
