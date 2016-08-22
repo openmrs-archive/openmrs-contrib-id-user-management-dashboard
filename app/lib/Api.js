@@ -202,7 +202,7 @@ module.exports = (router) => {
     let onlyLDAP = req.body.onlyLDAP;
     async.map(users, (user, callback) => {
       if (user.inMongo && user.uid && !onlyLDAP) {
-        if (onlyMongo) {
+        if (onlyMongo || !user.inLDAP) {
           UserSchema.update({username: user.username}, {
             inLDAP: false
           }, (err) => {
@@ -228,7 +228,7 @@ module.exports = (router) => {
              else {
                userMongo.remove((err) => {
                  callback(err, user);
-               })
+               });
              }
           });
         }

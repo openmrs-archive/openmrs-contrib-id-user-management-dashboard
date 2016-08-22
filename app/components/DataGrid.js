@@ -27,8 +27,7 @@ class DataGrid extends React.Component {
       size: props.size,
       pages: props.pages,
       selected: [],
-      source: props.source,
-      prevSelected: []
+      source: props.source
     };
 
     this.handleRemove = this.handleRemove.bind(this);
@@ -48,12 +47,20 @@ class DataGrid extends React.Component {
     });
   }
 
-  handleSelect = (selected) => {
-    const prevSelected = this.state.selected;
-    if (prevSelected.length && selected.length && selected[0] === prevSelected[0]) {
+  handleSelect = (newSelected) => {
+    let selected = this.state.selected;
+    let diffNew = _.difference(newSelected, selected);
+    if (diffNew.length) {
+      _.each(diffNew, (el) => {
+        selected.push(el);
+      });
+    }
+    else if (!newSelected.length) {
       selected = [];
     }
-    this.setState({prevSelected});
+    else {
+      selected.splice(selected.indexOf(newSelected[newSelected.length - 1]), 1);
+    }
     this.setState({selected});
   };
 
@@ -104,18 +111,36 @@ class DataGrid extends React.Component {
       let allUsersInMongoFlag = true;
       let allUsersInLDAPFlag = true;
       let allItems = AppStore.getState().allItems;
+      let first = this.state.selected[0];
       let selectedUsers = _.map(this.state.selected, (index) => {
         let user = usersSource[index];
         if (allUsersInLDAPFlag) {
-          allUsersInLDAPFlag = user.inLDAP;
+          allUsersInLDAPFlag = user.inLDAP === usersSource[first].inLDAP;
         }
         if (allUsersInMongoFlag) {
-          allUsersInMongoFlag = user.inMongo;
+          allUsersInMongoFlag = user.inMongo === usersSource[first].inMongo;
         }
         return _.find(allItems, (item) => {
           return item.primaryEmail === user.primaryEmail;
         });
       });
+      let editUserSwitches = [];
+      if (allUsersInLDAPFlag) {
+        editUserSwitches.push(
+          <Switch
+            checked={usersSource[first].inLDAP}
+            label={'OpenLDAP'}
+            onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}/>
+        )
+      }
+      if (allUsersInMongoFlag) {
+        editUserSwitches.push(
+          <Switch
+            checked={usersSource[first].inMongo}
+            label={'MongoDb'}
+            onChange={this.handleUserStatusChange.bind(this, 'inMongo')}/>
+        )
+      }
       editUserBlock =
         <Row style={{marginTop: '15px'}} >
           <Col md={3}>
@@ -124,18 +149,11 @@ class DataGrid extends React.Component {
           <Col md={2} mdOffset={1}>
             <Button label='Remove' accent onClick={this.handleRemove}/>
           </Col>
-          <Col md={2} style={{marginTop: '5px'}}>
-            <Switch
-              checked={allUsersInLDAPFlag}
-              label={'OpenLDAP'}
-              onChange={this.handleUserStatusChange.bind(this, 'inLDAP')}/>
-          </Col>
-          <Col md={2} style={{marginTop: '5px'}}>
-            <Switch
-              checked={allUsersInMongoFlag}
-              label={'MongoDb'}
-              onChange={this.handleUserStatusChange.bind(this, 'inMongo')}/>
-          </Col>
+          {editUserSwitches.map((el, index) => {
+            return <Col md={2} style={{marginTop: '5px'}} key={index}>
+              {el}
+            </Col>
+          })}
         </Row>;
     }
     else {
