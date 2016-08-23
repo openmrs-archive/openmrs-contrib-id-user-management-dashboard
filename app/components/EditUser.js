@@ -110,7 +110,7 @@ class EditUser extends React.Component {
     let selectedUser, emailsList = [];
     if (this.state.users.length === 1) {
       selectedUser = this.state.users[0];
-      editButtonLabel = `Edit User "${selectedUser.username}"`;
+      editButtonLabel = `Edit "${selectedUser.username}"`;
       groups = selectedUser.groups;
       for (var index in selectedUser.emailList) {
         if (selectedUser.emailList[index] === selectedUser.primaryEmail) {

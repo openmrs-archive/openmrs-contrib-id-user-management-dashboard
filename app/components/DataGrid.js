@@ -141,13 +141,14 @@ class DataGrid extends React.Component {
             onChange={this.handleUserStatusChange.bind(this, 'inMongo')}/>
         )
       }
+      let removeButtonTitle = selectedUsers.length > 1 ? `Remove ${selectedUsers.length} users` : `Remove "${selectedUsers[0].username}"`;
       editUserBlock =
         <Row style={{marginTop: '15px'}} >
           <Col md={3}>
             <EditUser mini users={selectedUsers}/>
           </Col>
-          <Col md={2} mdOffset={1}>
-            <Button label='Remove' accent onClick={this.handleRemove}/>
+          <Col md={3}>
+            <Button icon={'delete'} label={removeButtonTitle} accent onClick={this.handleRemove}/>
           </Col>
           {editUserSwitches.map((el, index) => {
             return <Col md={2} style={{marginTop: '5px'}} key={index}>
