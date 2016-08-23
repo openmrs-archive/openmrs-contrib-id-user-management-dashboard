@@ -31,7 +31,7 @@ class EditUser extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({users: _.cloneDeep(newProps.users), original: _.cloneDeep(props.users)});
+    this.setState({users: _.cloneDeep(newProps.users), original: _.cloneDeep(newProps.users)});
   }
 
   handleToggle = () => {
