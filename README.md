@@ -4,15 +4,12 @@ User Management Dashboard module for [OpenMRS ID Dashboard][1].
 
 ## Installation
 
+No actions are necessary to install this.
+
+From the root of the [OpenMRS ID Dashboard][1] directory do:
+
 ```
-git clone https://github.com/diospark/openmrs-contrib-id-user-management-dashboard
-# Within app/user-modules directory of OpenMRS ID
-
-cd openmrs-contrib-id-user-management-dashboard
-
-npm i
-# Install dependencies
-# Then, add "openmrs-contrib-id-user-management-dashboard" to list of user-modules
+git submodule update --init ; git submodule foreach npm i
 ```
 
 [1]: https://github.com/openmrs/openmrs-contrib-id
