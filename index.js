@@ -8,9 +8,9 @@ const mid = require('../../express-middleware');
 
 const compiler = webpack(config);
 
-module.exports = function(app) {
+module.exports = app => {
   
-  var router = express.Router();
+  const router = express.Router();
   
   require('./app/lib/Api')(router);
   

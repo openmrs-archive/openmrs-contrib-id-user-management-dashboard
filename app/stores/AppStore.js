@@ -130,7 +130,7 @@ class AppStore {
     let filteredFirstItems = _.filter(this.state.allItems, (item) => {
       let query = strictCheck(item) || regExpCheck(item);
       if (query) {
-        var state = true;
+        let state = true;
         _.each(that.state.filters, (el) => {
           state && (state = item[el]);
         });
@@ -140,7 +140,7 @@ class AppStore {
     });
     let filteredItems = _.sortBy(_.map(filteredFirstItems, (item) => {
       let obj = {};
-      for (var key in item) {
+      for (const key in item) {
         if (key && that.state.columns.indexOf(key) !== -1) {
           obj[key] = item[key];
         }
@@ -223,7 +223,7 @@ class AppStore {
         if (options.onlyLDAP || options.onlyMongo) {
           allItems = this.state.allItems;
           _.each(options.users, (user) => {
-            var userGlobal = _.find(allItems, (item) => {
+            const userGlobal = _.find(allItems, (item) => {
               return item.username === user.username;
             });
             if (options.onlyLDAP) {
