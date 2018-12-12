@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/openmrs/openmrs-contrib-id-user-management-dashboard"
   },
-  "license": "MIT",
+  "license": "MPL-2.0",
   "devDependencies": {
     "autoprefixer": "6.3.6",
     "babel-core": "6.9.1",
