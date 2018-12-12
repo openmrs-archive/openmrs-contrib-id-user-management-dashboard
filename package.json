@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/diospark/openmrs-contrib-id-user-management-dashboard"
+    "url": "https://github.com/openmrs/openmrs-contrib-id-user-management-dashboard"
   },
   "license": "MIT",
   "devDependencies": {
